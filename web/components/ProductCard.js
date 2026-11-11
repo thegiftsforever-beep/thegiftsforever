@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { img, salePrice } from '@/lib/utils';
+import { img, percentOff, salePrice } from '@/lib/utils';
 import { Price } from './Currency';
 import { IconTruck } from './Icons';
 
 export default function ProductCard({ p, priority = false }) {
-  const sale = salePrice(p.price, p.discount);
+  const sale = salePrice(p.price);
+  const off = percentOff(p.price, p.comparePrice);
   return (
     <Link href={`/product/${p.slug}`} className="group flex flex-col">
       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-blush">
@@ -30,7 +31,7 @@ export default function ProductCard({ p, priority = false }) {
       <h3 className="mt-3 line-clamp-2 text-[14.5px] font-medium leading-snug text-ink transition group-hover:text-wine">{p.name}</h3>
       <div className="mt-1.5 flex items-baseline gap-2">
         <span className="text-[15px] font-bold text-wine"><Price value={sale} /></span>
-        {p.discount > 0 && <span className="text-xs font-semibold text-muted">{p.discount}% off</span>}
+        {off > 0 && <span className="text-xs font-semibold text-muted">{off}% off</span>}
       </div>
     </Link>
   );

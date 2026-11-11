@@ -69,7 +69,7 @@ export const UI = {
       { key: 'coverImage', label: 'Cover Image', type: 'image', folder: 'products', side: true },
       { key: 'gallery', label: 'Gallery Images', type: 'gallery', folder: 'gallery', side: true },
       { key: 'price', label: 'Price', type: 'number', required: true, placeholder: 'Enter price', side: true, half: true },
-      { key: 'discount', label: 'Discount %', type: 'number', placeholder: 'Enter Discount %', side: true, half: true, default: 0 },
+      { key: 'comparePrice', label: 'Original Price', type: 'number', placeholder: 'Optional, before-sale price', hint: 'Customer pays Price. If this is higher, the % off is shown.', side: true, half: true, default: 0 },
       { key: 'costPrice', label: 'Cost Price', type: 'number', placeholder: 'Used for profit report', side: true, half: true, default: 0 },
       { key: 'imagesNeed', label: 'Images Need', type: 'number', placeholder: 'Photos customer must upload', side: true, half: true, default: 0 },
       { key: 'youtubeUrl', label: 'Youtube Url', type: 'text', placeholder: 'Enter Youtube Url', side: true },

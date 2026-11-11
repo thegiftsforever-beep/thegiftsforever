@@ -6,7 +6,7 @@ import ProductCard from '@/components/ProductCard';
 import Reviews from '@/components/Reviews';
 import { getProduct, getRelated, getReviews, getSite, getSuggestions } from '@/lib/data';
 import { IconStar } from '@/components/Icons';
-import { img, salePrice } from '@/lib/utils';
+import { img, percentOff, salePrice } from '@/lib/utils';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -37,7 +37,7 @@ export default async function ProductPage({ params }) {
   ]);
   const images = [p.coverImage, ...(p.gallery || [])].filter(Boolean).map(img);
   const yt = youtubeId(p.youtubeUrl);
-  const sale = salePrice(p.price, p.discount);
+  const sale = salePrice(p.price);
   const stars = reviews.length ? Math.round(reviews.reduce((s, r) => s + (r.rating || 5), 0) / reviews.length) : 5;
 
   const jsonLd = {
@@ -72,7 +72,7 @@ export default async function ProductPage({ params }) {
               slug: p.slug,
               image: images[0],
               price: p.price,
-              discount: p.discount,
+              off: percentOff(p.price, p.comparePrice),
               variations: p.variations || {},
               modifiers: p.modifiers || [],
               imagesNeed: p.imagesNeed || 0,

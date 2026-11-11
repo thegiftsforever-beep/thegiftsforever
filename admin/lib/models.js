@@ -77,6 +77,8 @@ const ProductSchema = new Schema(
     price: { type: Number, default: 0 },
     costPrice: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
+    comparePrice: { type: Number, default: 0 },
+    comparePrice: { type: Number, default: 0 },
     youtubeUrl: String,
     imagesNeed: { type: Number, default: 0 },
     metaKeywords: String,

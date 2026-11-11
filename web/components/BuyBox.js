@@ -1,12 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { useCart } from './CartProvider';
 import { Price } from './Currency';
-import { IconBag, IconMinus, IconPlus, IconShare, IconUpload, IconWhatsApp, IconX } from './Icons';
-import { img, salePrice } from '@/lib/utils';
+import { IconBag, IconShare, IconUpload, IconWhatsApp } from './Icons';
+import { salePrice } from '@/lib/utils';
 
 export const VAR_LABELS = { size: 'Size', color: 'Color', quantity: 'Quantity', suitColor: 'Suit Color' };
 
@@ -37,7 +35,7 @@ export async function uploadCustomerPhoto(file) {
 
 /** Price for a product with the chosen variation values and modifiers (both are add-ons). */
 export function unitPrice(product, chosen, modifiers = []) {
-  let price = salePrice(product.price, product.discount);
+  let price = salePrice(product.price);
   for (const [group, val] of Object.entries(chosen || {})) {
     const opt = product.variations?.[group]?.find((o) => o.value === val);
     if (opt?.price) price += Number(opt.price);
@@ -82,74 +80,14 @@ export function PhotoInput({ value, onChange, label }) {
   );
 }
 
-function AddedPopup({ cartKey, suggestions, onClose }) {
-  const { items, add, setQty } = useCart();
-  const it = items.find((x) => x.key === cartKey);
-  if (!it) return null;
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/50 p-4" onClick={onClose}>
-      <div className="max-h-[90vh] w-full max-w-lg animate-rise overflow-y-auto rounded-3xl bg-white p-6" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-semibold">Added to cart</h2>
-          <button onClick={onClose} aria-label="Close"><IconX /></button>
-        </div>
-        <div className="mt-4 flex gap-4">
-          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-blush">
-            <Image src={it.image || '/placeholder.svg'} alt="" fill sizes="80px" className="object-cover" unoptimized={it.image?.startsWith('/api/uploads/')} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="line-clamp-2 text-sm font-medium">{it.name}</p>
-            <div className="mt-2 flex items-center justify-between">
-              <div className="flex items-center rounded-full border border-ink/10">
-                <button onClick={() => setQty(it.key, it.qty - 1)} className="p-2" aria-label="Decrease"><IconMinus width={14} height={14} /></button>
-                <span className="w-7 text-center text-sm">{it.qty}</span>
-                <button onClick={() => setQty(it.key, it.qty + 1)} className="p-2" aria-label="Increase"><IconPlus width={14} height={14} /></button>
-              </div>
-              <span className="font-semibold text-wine"><Price value={it.price * it.qty} /></span>
-            </div>
-          </div>
-        </div>
-        {suggestions.length > 0 && (
-          <div className="mt-6">
-            <h3 className="mb-3 text-sm font-semibold">Add something extra</h3>
-            <ul className="space-y-2">
-              {suggestions.slice(0, 4).map((s) => (
-                <li key={s._id} className="flex items-center gap-3 rounded-xl border border-ink/5 p-2">
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-blush">
-                    <Image src={img(s.coverImage)} alt="" fill sizes="48px" className="object-cover" unoptimized={s.coverImage?.startsWith('/api/uploads/')} />
-                  </div>
-                  <span className="line-clamp-1 flex-1 text-sm">{s.name}</span>
-                  <span className="text-sm font-semibold text-wine"><Price value={salePrice(s.price, s.discount)} /></span>
-                  <button
-                    onClick={() => add({ productId: s._id, slug: s.slug, name: s.name, image: img(s.coverImage), price: salePrice(s.price, s.discount), qty: 1, variations: {}, freeDelivery: !!s.freeDelivery, options: {} }, { silent: true })}
-                    className="rounded-full bg-wine p-1.5 text-white"
-                    aria-label={`Add ${s.name}`}
-                  >
-                    <IconPlus width={14} height={14} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <Link href="/cart" className="btn-ghost">View cart</Link>
-          <Link href="/checkout" className="btn-wine">Checkout</Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function BuyBox({ product, whatsapp, suggestions = [] }) {
-  const { add } = useCart();
+  const { add, openCart } = useCart();
   const groups = Object.entries(product.variations || {}).filter(([, opts]) => opts?.length);
   const [chosen, setChosen] = useState(() => Object.fromEntries(groups.map(([g, opts]) => [g, opts[0].value])));
   const [mods, setMods] = useState([]);
   const [fields, setFields] = useState({});
   const [photos, setPhotos] = useState(() => Array(product.imagesNeed || 0).fill(''));
   const [error, setError] = useState('');
-  const [added, setAdded] = useState(null);
   const [copied, setCopied] = useState(false);
 
   const price = unitPrice(product, chosen, mods);
@@ -187,7 +125,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
     const item = buildItem();
     if (!item) return;
     add(item, { silent: true });
-    setAdded(item.productId + JSON.stringify(item.options));
+    openCart(suggestions);
   }
 
   async function share() {
@@ -204,7 +142,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
     <div className="mt-6">
       <div className="flex items-baseline gap-2">
         <span className="font-display text-4xl font-semibold text-wine"><Price value={price} /></span>
-        {product.discount > 0 && <span className="text-lg font-semibold text-muted">{product.discount}% off</span>}
+        {product.off > 0 && <span className="text-lg font-semibold text-muted">{product.off}% off</span>}
       </div>
 
       {groups.map(([g, opts]) => (
@@ -293,7 +231,6 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
       </div>
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
       <p className="mt-5 rounded-xl bg-blush/60 p-3 text-sm">💝 Please Note: If an item is not available, we will replace it with a similar item of the same value.</p>
-      {added && <AddedPopup cartKey={added} suggestions={suggestions} onClose={() => setAdded(null)} />}
     </div>
   );
 }

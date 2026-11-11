@@ -3,6 +3,7 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-dancing), cursive;
   --color-wine: #740000;
   --color-wine-dark: #520000;
   --color-rose: #e7a1b4;

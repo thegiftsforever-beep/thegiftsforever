@@ -34,11 +34,8 @@ export default function HeaderClient({ menu, site }) {
   }
 
   const links = [
-    ['Home', '/'],
     ['Shop', '/categories'],
     ...menu.slice(0, 4).map((c) => [c.name, `/category/${c.slug}`]),
-    ['Blog', '/blogs'],
-    ['Contact', '/contact'],
   ];
 
   const searchBox = (

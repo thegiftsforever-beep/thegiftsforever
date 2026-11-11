@@ -60,55 +60,9 @@ export default async function Home() {
         <ProductRow key={r.category._id} row={r} priority={idx === 0} />
       ))}
 
-      {/* editorial banners */}
-      <section className="container-x mt-24 grid gap-5 md:grid-cols-2">
-        <Banner
-          href="/categories"
-          image="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=1200&q=80"
-          eyebrow="For her"
-          title="Blooms she'll remember"
-          text="Imported roses, tulips and lilies arranged by our in-house florists."
-        />
-        <Banner
-          href="/categories"
-          image="https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=1200&q=80"
-          eyebrow="For him"
-          title="Hampers he'll actually love"
-          text="Watches, wallets, fragrances and gourmet treats — curated in one box."
-          dark
-        />
-      </section>
-
       {rows.slice(2).map((r) => (
         <ProductRow key={r.category._id} row={r} />
       ))}
-
-      {/* how it works */}
-      <section className="container-x mt-24">
-        <div className="relative overflow-hidden rounded-[32px] bg-wine px-6 py-16 text-white sm:px-14">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-gold/20 blur-3xl" />
-          <div className="relative grid gap-10 lg:grid-cols-[1fr_2fr] lg:items-center">
-            <div>
-              <p className="eyebrow">How it works</p>
-              <h2 className="mt-3 font-display text-4xl font-semibold">Send love in three easy steps</h2>
-              <p className="mt-4 text-white/75">From abroad or across town — we handle everything from wrapping to the doorstep smile.</p>
-            </div>
-            <ol className="grid gap-5 sm:grid-cols-3">
-              {[
-                ['01', 'Pick a gift', 'Browse flowers, cakes, hampers and personalised keepsakes.'],
-                ['02', 'Add a message', 'Write a card note and choose the delivery date.'],
-                ['03', 'We deliver', 'Hand-delivered with a photo sent to you on WhatsApp.'],
-              ].map(([n, t, d]) => (
-                <li key={n} className="rounded-3xl bg-white/10 p-6 backdrop-blur">
-                  <span className="font-display text-3xl text-gold">{n}</span>
-                  <h3 className="mt-3 text-lg font-semibold">{t}</h3>
-                  <p className="mt-2 text-sm text-white/70">{d}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
 
       <Reviews reviews={reviews} />
 
@@ -162,20 +116,5 @@ function ProductRow({ row, priority }) {
         <Link href={`/category/${row.category.slug}`} className="btn-wine">View more <IconArrowRight width={16} height={16} /></Link>
       </div>
     </section>
-  );
-}
-
-function Banner({ href, image, eyebrow, title, text, dark }) {
-  return (
-    <Link href={href} className="group relative flex min-h-[340px] overflow-hidden rounded-[28px]">
-      <Image src={image} alt={title} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
-      <div className={`absolute inset-0 ${dark ? 'bg-gradient-to-t from-ink/85 to-ink/10' : 'bg-gradient-to-t from-wine/85 to-wine/5'}`} />
-      <div className="relative mt-auto p-8 text-white">
-        <p className="eyebrow">{eyebrow}</p>
-        <h3 className="mt-2 font-display text-3xl font-semibold">{title}</h3>
-        <p className="mt-2 max-w-sm text-sm text-white/80">{text}</p>
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gold">Shop now <IconArrowRight width={16} height={16} /></span>
-      </div>
-    </Link>
   );
 }

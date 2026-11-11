@@ -11,7 +11,7 @@ const SOURCES = {
   tags: () => Tag.find({}, 'name').sort({ name: 1 }).lean(),
   forms: () => Form.find({}, 'name').sort({ name: 1 }).lean(),
   fields: () => Field.find({}, 'label name type').sort({ label: 1 }).lean(),
-  products: () => Product.find({ active: true }, 'name price discount costPrice coverImage').sort({ name: 1 }).lean(),
+  products: () => Product.find({ active: true }, 'name price costPrice coverImage').sort({ name: 1 }).lean(),
   websites: () => Website.find({}, 'name domain').sort({ createdAt: 1 }).lean(),
 };
 

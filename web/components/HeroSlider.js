@@ -33,7 +33,7 @@ export default function HeroSlider({ slides }) {
 
         <div key={i} className="absolute inset-y-0 left-0 flex max-w-[75%] flex-col justify-center px-5 sm:max-w-xl sm:px-12 lg:px-20">
           {s.eyebrow && <p className="animate-rise text-[10px] font-semibold uppercase tracking-[0.2em] text-white/85 sm:text-xs">{s.eyebrow}</p>}
-          {s.title && <h1 className="mt-2 animate-rise font-display text-2xl font-semibold leading-tight text-white sm:mt-3 sm:text-4xl lg:text-5xl">{s.title}</h1>}
+          {s.title && <h1 className="mt-2 animate-rise font-script text-3xl font-bold leading-tight text-white sm:mt-3 sm:text-5xl lg:text-6xl">{s.title}</h1>}
           {s.content && <p className="mt-2 line-clamp-2 animate-rise text-xs text-white/85 sm:mt-4 sm:line-clamp-none sm:text-base">{strip(s.content)}</p>}
           <div className="mt-4 sm:mt-7">
           <Link href={s.link || '/categories'} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold sm:px-7 sm:py-3.5 text-wine shadow-lg transition hover:bg-blush">

@@ -9,6 +9,9 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [ready, setReady] = useState(false);
   const [toast, setToast] = useState(null);
+  const [drawer, setDrawer] = useState({ open: false, suggestions: [] });
+  const openCart = useCallback((suggestions) => setDrawer((d) => ({ open: true, suggestions: suggestions || d.suggestions })), []);
+  const closeCart = useCallback(() => setDrawer((d) => (d.open ? { ...d, open: false } : d)), []);
 
   useEffect(() => {
     try {
@@ -41,13 +44,16 @@ export function CartProvider({ children }) {
       items,
       ready,
       add,
+      drawer,
+      openCart,
+      closeCart,
       setQty: (key, qty) => setItems((l) => l.map((x) => (x.key === key ? { ...x, qty: Math.max(1, qty) } : x))),
       remove: (key) => setItems((l) => l.filter((x) => x.key !== key)),
       clear: () => setItems([]),
       count: items.reduce((s, x) => s + x.qty, 0),
       subtotal: items.reduce((s, x) => s + x.price * x.qty, 0),
     }),
-    [items, ready, add]
+    [items, ready, add, drawer, openCart, closeCart]
   );
 
   return (

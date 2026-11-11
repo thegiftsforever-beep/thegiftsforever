@@ -5,7 +5,7 @@ import { Blog, Category, ContentPage, Product, Review, Slide, Website } from './
 
 const plain = (v) => JSON.parse(JSON.stringify(v));
 const visible = { active: true, hidden: { $ne: true } };
-const CARD = 'name slug coverImage price discount freeDelivery category';
+const CARD = 'name slug coverImage price comparePrice freeDelivery category';
 
 const DEFAULT_DELIVERY = [{ name: 'Standard Delivery', price: 600 }, { name: 'Sameday Delivery', price: 800 }, { name: 'Midnight Delivery (10 to 12 PM)', price: 1000 }];
 
@@ -121,7 +121,7 @@ export async function getSuggestions(product, limit = 4) {
   );
 }
 
-const FALLBACK_RATES = { PKR: 1, USD: 0.0036, GBP: 0.0027, EUR: 0.0031, AED: 0.013, SAR: 0.0135, CAD: 0.005, AUD: 0.0055 };
+const FALLBACK_RATES = { PKR: 1, AED: 0.013, GBP: 0.0027, USD: 0.0036, EUR: 0.0031, RUB: 0.29, INR: 0.3, SAR: 0.0135, AUD: 0.0055, TRY: 0.12, SEK: 0.038, SGD: 0.0047 };
 
 /** PKR exchange rates, refreshed twice a day. */
 export const getRates = cache(async () => {

@@ -31,7 +31,7 @@ export async function POST(req) {
   for (const it of body.items.slice(0, 50)) {
     const p = byId[it.productId];
     if (!p) continue;
-    let price = salePrice(p.price, p.discount);
+    let price = salePrice(p.price);
     for (const [group, val] of Object.entries(it.variations || {})) {
       const opt = p.variations?.[group]?.find((o) => o.value === val);
       if (opt?.price) price += Number(opt.price);

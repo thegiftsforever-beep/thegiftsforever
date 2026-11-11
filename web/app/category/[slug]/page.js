@@ -26,10 +26,13 @@ export default async function CategoryPage({ params, searchParams }) {
   const c = await getCategory(slug);
   if (!c) notFound();
   const page = Math.max(1, Number(sp.page) || 1);
-  const [{ items, total, pages }, reviews] = await Promise.all([
+  const [{ items, total, pages }, reviews, sections] = await Promise.all([
     getCategoryProducts(c._id, { page }),
     getReviews({ kind: 'category', category: c._id, limit: 6 }),
+    // each sub category gets its own block of products, in sub category order
+    Promise.all((c.children || []).map(async (k) => ({ k, ...(await getCategoryProducts(k._id, { limit: 8 })) }))),
   ]);
+  const shown = sections.filter((x) => x.items.length);
   const href = (p) => `?${new URLSearchParams({ ...sp, page: String(p) })}`;
 
   return (
@@ -52,15 +55,30 @@ export default async function CategoryPage({ params, searchParams }) {
           </div>
         )}
 
-        {items.length ? (
+        {shown.map(({ k, items: list, total: count }, idx) => (
+          <section key={k._id} className={idx ? 'mt-16' : ''}>
+            <h2 className="section-title mb-7">{k.name}</h2>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+              {list.map((p, i) => <ProductCard key={p._id} p={p} priority={idx === 0 && i < 4} />)}
+            </div>
+            {count > list.length && (
+              <div className="mt-8 text-center">
+                <Link href={`/category/${k.slug}`} className="btn-wine">View more</Link>
+              </div>
+            )}
+          </section>
+        ))}
+
+        {items.length > 0 && !shown.length && (
           <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
             {items.map((p, i) => <ProductCard key={p._id} p={p} priority={i < 4} />)}
           </div>
-        ) : (
+        )}
+        {!items.length && !shown.length && (
           <div className="rounded-3xl bg-white p-16 text-center text-muted">No gifts here yet — check back soon.</div>
         )}
 
-        {pages > 1 && (
+        {pages > 1 && !shown.length && (
           <nav className="mt-12 flex justify-center gap-2">
             {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
               <Link key={n} href={href(n)} className={`flex h-10 w-10 items-center justify-center rounded-full text-sm ${n === page ? 'bg-wine text-white' : 'bg-white hover:bg-blush'}`}>{n}</Link>

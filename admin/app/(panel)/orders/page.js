@@ -77,9 +77,7 @@ function OrderView({ o }) {
         </tbody>
       </table>
       <div className="mt-3 ml-auto w-64 space-y-1">
-        <div className="flex justify-between"><span>Subtotal</span><span>{money(o.subtotal)}</span></div>
         <div className="flex justify-between"><span>Delivery</span><span>{money(o.deliveryFee)}</span></div>
-        <div className="flex justify-between text-base font-bold"><span>Total</span><span>{money(o.total)}</span></div>
         <div className="flex justify-between text-slate-500"><span>Payment</span><span className="uppercase">{o.paymentMethod}</span></div>
       </div>
       {o.image && (
@@ -169,7 +167,7 @@ export default function OrdersPage() {
         <div className="overflow-x-auto">
           <table className="data w-full min-w-[1100px]">
             <thead>
-              <tr>{['ID', 'D/T', 'Status', 'Image', 'Name', 'Number', 'Receiver Name', 'Receiver Number', 'Action'].map((h) => <th key={h}>{h}</th>)}</tr>
+              <tr>{['ID', 'D/T', 'Status', 'Image', 'Payment', 'Name', 'Number', 'Receiver Name', 'Receiver Number', 'Action'].map((h) => <th key={h}>{h}</th>)}</tr>
             </thead>
             <tbody>
               {data.items?.map((o) => (
@@ -182,6 +180,14 @@ export default function OrdersPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={previewSrc(o.image || o.items[0].image)} alt="" className="h-12 w-12 rounded border object-cover" />
                     ) : 'No Image'}
+                  </td>
+                  <td>
+                    {o.paymentProof ? (
+                      <a href={previewSrc(o.paymentProof)} target="_blank" title="Payment screenshot">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={previewSrc(o.paymentProof)} alt="Payment" className="h-12 w-12 rounded border object-cover" />
+                      </a>
+                    ) : <span className="text-xs text-slate-400">None</span>}
                   </td>
                   <td>{o.customer?.name}</td>
                   <td>{o.customer?.phone}</td>
@@ -197,7 +203,7 @@ export default function OrdersPage() {
                   </td>
                 </tr>
               ))}
-              {!data.items?.length && <tr><td colSpan={9}>No orders found</td></tr>}
+              {!data.items?.length && <tr><td colSpan={10}>No orders found</td></tr>}
             </tbody>
           </table>
         </div>
