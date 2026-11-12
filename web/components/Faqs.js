@@ -11,7 +11,7 @@ export default function Faqs({ items }) {
           <details key={f.q} className="group rounded-2xl bg-white p-5 open:shadow-sm">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
               {f.q}
-              <IconChevronDown width={18} height={18} className="shrink-0 text-wine transition group-open:rotate-180" />
+              <IconChevronDown width={18} height={18} className="shrink-0 text-wine-ink transition group-open:rotate-180" />
             </summary>
             <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-muted">{f.a}</p>
           </details>

@@ -16,7 +16,7 @@ export default function Reviews({ reviews, title = 'Loved by gifters everywhere'
             </div>
             <blockquote className="mt-4 text-[15px] leading-relaxed text-ink/80">“{r.review}”</blockquote>
             <figcaption className="mt-6 flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blush font-display font-semibold text-wine">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blush font-display font-semibold text-wine-ink">
                 {r.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
               </span>
               <span>

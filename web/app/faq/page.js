@@ -2,7 +2,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { IconChevronDown } from '@/components/Icons';
 
-export const metadata = { title: 'FAQs', description: 'Answers about delivery, payments, personalisation and more.' };
+export const metadata = { title: 'FAQs', description: 'Answers about delivery, payments, personalisation and more.', alternates: { canonical: '/faq' } };
 
 const FAQ = [
   ['Do you offer same-day delivery?', 'Yes. Orders placed before 4 PM are delivered the same day in Karachi. Other major cities receive gifts within 24–48 hours.'],
@@ -18,19 +18,29 @@ const FAQ = [
 export default function Faq() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+          }),
+        }}
+      />
       <PageHeader title="Frequently asked questions" eyebrow="Help centre" crumbs={[['FAQs']]} />
       <div className="container-x mt-12 max-w-3xl space-y-3">
         {FAQ.map(([q, a]) => (
           <details key={q} className="group rounded-2xl bg-white p-5 open:shadow-sm">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
               {q}
-              <IconChevronDown width={18} height={18} className="shrink-0 text-wine transition group-open:rotate-180" />
+              <IconChevronDown width={18} height={18} className="shrink-0 text-wine-ink transition group-open:rotate-180" />
             </summary>
             <p className="mt-3 text-[15px] leading-relaxed text-muted">{a}</p>
           </details>
         ))}
         <p className="pt-6 text-center text-sm text-muted">
-          Still have questions? <Link href="/contact" className="text-wine underline">Contact us</Link>
+          Still have questions? <Link href="/contact" className="text-wine-ink underline">Contact us</Link>
         </p>
       </div>
     </>

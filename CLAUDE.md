@@ -37,18 +37,18 @@ Use the same database values in both apps. On Vercel, admin's `NEXT_PUBLIC_SITE_
 - **Uploads:** images are stored inside MongoDB (`StoredUpload`) and served from `/api/uploads/<folder>/<file>` by both apps. Both apps shrink images in the browser before upload, because Vercel rejects request bodies over 4.5MB. Storefront `<Image>` tags pass `unoptimized` for `/api/uploads/` URLs.
 - **Admin CRUD is config driven:** server settings live in `admin/lib/resources.js` and the screens in `admin/lib/resourceUi.js` (columns, filters, form fields). Field types include `repeater`, `variations`, `richtext`, `gallery`, `multiselect` and `flags`. Most new admin fields only need a config entry.
 - **Admin login:** an HMAC-signed cookie (`lib/auth.js`). A password saved from the Change Password page (`AdminCredential`, scrypt hash) replaces `ADMIN_PASSWORD`.
-- **Prices:** the customer pays the entered `price`. The optional `comparePrice` (admin label "Original Price") only drives the "% off" label via `percentOff()`; the old `discount` field is unused. The order API (`web/app/api/orders/route.js`) recomputes every price, modifier and delivery fee on the server; never trust prices sent by the client.
+- **Prices:** the customer pays the entered `price`. `discount` (admin "Discount %") is a label only, shown as "10% off"; it never changes the price. `comparePrice` is unused. The order API (`web/app/api/orders/route.js`) recomputes every price, modifier and delivery fee on the server; never trust prices sent by the client.
 - **Delivery and payment:** both come from the first active `Website` document, edited in admin under Websites (`deliveryOptions`, `freeDeliveryOver`, `paymentMethods`). `getSite()` in `web/lib/data.js` supplies defaults when these are empty. Checkout shows a Copy button for each `Label: value` line in payment details. The payment screenshot is optional.
 - **Currency:** display only, through `web/components/Currency.js` and `<Price>`. Orders are always stored in PKR.
 - **Order alert:** the admin shell polls for orders with status `new`, shows a badge and plays a chime until each one is moved to another status.
 
 ## Client conventions
 
-- Brand colour `#740000` (the `wine` token in web, `brand` in admin). Headings use Poppins.
+- Website theme colour `#D8A2A2` (`wine` token; `wine-ink` #8C4A4A for text, dark ink text on pink). Admin keeps `#740000` (`brand`). Headings use Poppins, hero titles Dancing Script.
 - Do not show cash on delivery or order tracking; the client removed both.
 - Every product page shows the line: "💝 Please Note: If an item is not available, we will replace it with a similar item of the same value."
 - The footer credit "Designed & Developed by Zoxen Digital" links to https://zoxendigital.com. Keep it.
-- A "% off" label must come from a real `comparePrice`; never show a percentage that has no real before-sale price behind it.
+- The client asked for a display-only "% off" label. Remind them to use it only where the product really was sold at the higher price.
 
 ## Open items
 

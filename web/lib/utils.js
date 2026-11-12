@@ -18,12 +18,20 @@ export function salePrice(price) {
   return Math.round(Number(price || 0));
 }
 
-/** Percent off shown next to the price, from the optional original (before-sale) price. */
-export function percentOff(price, comparePrice) {
-  const p = Number(price || 0);
-  const c = Number(comparePrice || 0);
-  return c > p && p > 0 ? Math.round(((c - p) / c) * 100) : 0;
+
+/**
+ * Fixes rich text pasted from Google Docs, where every line can arrive as <h1 aria-level="N">.
+ * Each heading becomes the level it really is (h1-h6 from aria-level), so the page keeps one real H1.
+ */
+export function cleanHtml(html = '') {
+  return String(html || '')
+    // drop list items that hold nothing but spaces, <br> or empty paragraphs
+    .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (li, inner) => (inner.replace(/<[^>]+>|&nbsp;|\s/g, '') ? li : ''))
+    .replace(/<h([1-6])([^>]*?)\saria-level="([1-6])"([^>]*)>([\s\S]*?)<\/h\1>/gi, (_, _l, a, lvl, b, inner) => `<h${lvl}${a}${b}>${inner}</h${lvl}>`);
 }
+
+/** True when the HTML has its own H1, so the page title should not also be one. */
+export const hasH1 = (html = '') => /<h1[\s>]/i.test(html || '');
 
 export function pkr(n) {
   return 'PKR ' + Math.round(Number(n || 0)).toLocaleString('en-PK');

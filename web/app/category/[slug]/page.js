@@ -6,7 +6,7 @@ import ProductCard from '@/components/ProductCard';
 import Reviews from '@/components/Reviews';
 import Faqs from '@/components/Faqs';
 import { getCategory, getCategoryProducts, getReviews } from '@/lib/data';
-import { img } from '@/lib/utils';
+import { cleanHtml, hasH1, img } from '@/lib/utils';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -16,7 +16,8 @@ export async function generateMetadata({ params }) {
     title: c.metaTitle || c.name,
     description: c.metaDescription,
     keywords: c.metaKeywords,
-    openGraph: { images: c.image?.startsWith('http') ? [c.image] : [] },
+    alternates: { canonical: `/category/${c.slug}` },
+    openGraph: { images: c.image ? [img(c.image)] : undefined },
   };
 }
 
@@ -33,11 +34,12 @@ export default async function CategoryPage({ params, searchParams }) {
     Promise.all((c.children || []).map(async (k) => ({ k, ...(await getCategoryProducts(k._id, { limit: 8 })) }))),
   ]);
   const shown = sections.filter((x) => x.items.length);
+  const description = cleanHtml(c.description);
   const href = (p) => `?${new URLSearchParams({ ...sp, page: String(p) })}`;
 
   return (
     <>
-      <PageHeader title={c.name} eyebrow="Collection" crumbs={[['Categories', '/categories'], [c.name]]}>
+      <PageHeader title={c.name} titleAs={hasH1(description) ? 'p' : 'h1'} eyebrow="Collection" crumbs={[['Categories', '/categories'], [c.name]]}>
         <p className="mt-3 text-muted">{total} gift{total === 1 ? '' : 's'} available</p>
       </PageHeader>
 
@@ -81,13 +83,13 @@ export default async function CategoryPage({ params, searchParams }) {
         {pages > 1 && !shown.length && (
           <nav className="mt-12 flex justify-center gap-2">
             {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-              <Link key={n} href={href(n)} className={`flex h-10 w-10 items-center justify-center rounded-full text-sm ${n === page ? 'bg-wine text-white' : 'bg-white hover:bg-blush'}`}>{n}</Link>
+              <Link key={n} href={href(n)} className={`flex h-10 w-10 items-center justify-center rounded-full text-sm ${n === page ? 'bg-wine text-ink' : 'bg-white hover:bg-blush'}`}>{n}</Link>
             ))}
           </nav>
         )}
 
-        {c.description && (
-          <article className="prose-gift mx-auto mt-20 max-w-3xl rounded-3xl bg-white p-8 sm:p-12" dangerouslySetInnerHTML={{ __html: c.description }} />
+        {description && (
+          <article className="prose-gift mx-auto mt-20 max-w-3xl rounded-3xl bg-white p-8 sm:p-12" dangerouslySetInnerHTML={{ __html: description }} />
         )}
       </div>
 

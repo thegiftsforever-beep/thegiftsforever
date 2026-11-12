@@ -21,7 +21,9 @@ export const metadata = {
   },
   description:
     'Send flowers, cakes, chocolates, gift hampers and personalised gifts to Pakistan. Same-day delivery in Karachi and fast nationwide delivery.',
-  openGraph: { siteName: 'TheGiftsForever', type: 'website' },
+  alternates: { canonical: '/' },
+  openGraph: { siteName: 'TheGiftsForever', type: 'website', images: [{ url: '/og.png', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
 };
 
 export default async function RootLayout({ children }) {

@@ -37,6 +37,7 @@ export default function RichText({ value, onChange, placeholder = 'Enter the Des
         <select onMouseDown={(e) => e.stopPropagation()} onChange={(e) => { exec('formatBlock', e.target.value); e.target.value = ''; }} defaultValue="" className="rounded border border-slate-200 px-1 py-1 text-sm">
           <option value="" disabled>Format</option>
           <option value="p">Paragraph</option>
+          <option value="h1">Heading 1 (only one per page)</option>
           <option value="h2">Heading 2</option>
           <option value="h3">Heading 3</option>
           <option value="blockquote">Quote</option>

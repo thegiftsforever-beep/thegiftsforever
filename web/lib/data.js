@@ -5,7 +5,7 @@ import { Blog, Category, ContentPage, Product, Review, Slide, Website } from './
 
 const plain = (v) => JSON.parse(JSON.stringify(v));
 const visible = { active: true, hidden: { $ne: true } };
-const CARD = 'name slug coverImage price comparePrice freeDelivery category';
+const CARD = 'name slug coverImage price discount freeDelivery category';
 
 const DEFAULT_DELIVERY = [{ name: 'Standard Delivery', price: 600 }, { name: 'Sameday Delivery', price: 800 }, { name: 'Midnight Delivery (10 to 12 PM)', price: 1000 }];
 
@@ -23,7 +23,13 @@ export const getSite = cache(async () => {
     payments: w?.paymentMethods?.length
       ? w.paymentMethods.map(({ name, details }) => ({ name, details }))
       : [{ name: 'Bank Transfer', details: w?.bankDetails || '' }],
-    social: { facebook: w?.facebook, instagram: w?.instagram, tiktok: w?.tiktok, youtube: w?.youtube, twitter: w?.twitter },
+    social: {
+      facebook: w?.facebook || 'https://www.facebook.com/thegiftsforever/',
+      instagram: w?.instagram || 'https://www.instagram.com/thegiftsforever1/',
+      tiktok: w?.tiktok || 'https://www.tiktok.com/@thegiftsforever',
+      linkedin: w?.linkedin || '',
+      pinterest: w?.pinterest || 'https://www.pinterest.com/thegiftsforever/',
+    },
   };
 });
 
@@ -62,7 +68,8 @@ export async function getCategory(slug) {
   await dbConnect();
   const c = await Category.findOne({ slug, active: true }).lean();
   if (!c) return null;
-  const children = await Category.find({ ...visible, parent: c._id }, 'name slug image').sort({ sort: 1 }).lean();
+  // sub categories: real children plus any category that picked this one under "Suggestions Category"
+  const children = await Category.find({ ...visible, _id: { $ne: c._id }, $or: [{ parent: c._id }, { alsoIn: c._id }] }, 'name slug image').sort({ sort: 1 }).lean();
   return plain({ ...c, children });
 }
 
@@ -133,6 +140,25 @@ export const getRates = cache(async () => {
     return FALLBACK_RATES;
   }
 });
+
+/** Rows of products shown under the buy buttons: the categories picked under "Modifiers" on the product's category. */
+export async function getModifierRows(categoryId, productId, perRow = 8) {
+  if (!categoryId) return [];
+  await dbConnect();
+  const cat = await Category.findById(categoryId, 'modifierCategories').lean();
+  const ids = cat?.modifierCategories || [];
+  if (!ids.length) return [];
+  const cats = await Category.find({ _id: { $in: ids }, ...visible }, 'name slug').lean();
+  const rows = await Promise.all(
+    ids.map(async (id) => {
+      const category = cats.find((x) => String(x._id) === String(id));
+      if (!category) return null;
+      const items = await Product.find({ ...visible, _id: { $ne: productId }, $or: [{ category: id }, { categories: id }] }, CARD).sort({ featured: -1, createdAt: -1 }).limit(perRow).lean();
+      return items.length ? { category, items } : null;
+    })
+  );
+  return plain(rows.filter(Boolean));
+}
 
 export async function searchProducts(q, limit = 48) {
   await dbConnect();

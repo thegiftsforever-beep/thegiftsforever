@@ -52,4 +52,6 @@ export const IconInstagram = make(<><rect x="3" y="3" width="18" height="18" rx=
 export const IconFacebook = make(<path d="M15 3h-2.5A4.5 4.5 0 0 0 8 7.5V10H5v4h3v7h4v-7h3l1-4h-4V7.5A.5.5 0 0 1 12.5 7H15Z" />);
 export const IconTiktok = make(<path d="M14 3v11.5a3.5 3.5 0 1 1-3-3.46M14 3c.5 2.6 2.4 4.5 5 5" />);
 
-export const SOCIALS = [['facebook', IconFacebook], ['instagram', IconInstagram], ['tiktok', IconTiktok], ['youtube', IconYoutube], ['twitter', IconTwitter]];
+export const IconLinkedin = make(<><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></>);
+export const IconPinterest = make(<><circle cx="12" cy="12" r="9" /><path d="M10.5 9.5c0-1.7 1.2-2.6 2.7-2.6 1.7 0 2.8 1.2 2.8 2.9 0 2.1-1.2 3.7-2.8 3.7-.9 0-1.5-.6-1.3-1.4M11.6 12l-1.8 8" /></>);
+export const SOCIALS = [['facebook', IconFacebook], ['instagram', IconInstagram], ['tiktok', IconTiktok], ['linkedin', IconLinkedin], ['pinterest', IconPinterest]];

@@ -63,7 +63,7 @@ export function CurrencySelect({ className = '' }) {
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 rounded-lg bg-wine py-2.5 pl-3 pr-2.5 text-sm font-bold text-white transition hover:bg-wine-dark"
+        className="flex items-center gap-2 rounded-lg bg-wine py-2.5 pl-3 pr-2.5 text-sm font-bold text-ink transition hover:bg-wine-dark"
       >
         <IconGlobe width={20} height={20} />
         {code}

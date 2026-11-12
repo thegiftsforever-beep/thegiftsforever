@@ -18,9 +18,3 @@ export function salePrice(price) {
   return Math.round(Number(price || 0));
 }
 
-/** Percent off shown next to the price, from the optional original (before-sale) price. */
-export function percentOff(price, comparePrice) {
-  const p = Number(price || 0);
-  const c = Number(comparePrice || 0);
-  return c > p && p > 0 ? Math.round(((c - p) / c) * 100) : 0;
-}

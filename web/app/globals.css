@@ -4,8 +4,9 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-dancing), cursive;
-  --color-wine: #740000;
-  --color-wine-dark: #520000;
+  --color-wine: #d8a2a2;
+  --color-wine-dark: #c78c8c;
+  --color-wine-ink: #8c4a4a;
   --color-rose: #e7a1b4;
   --color-blush: #fbeef1;
   --color-gold: #c9a24a;
@@ -28,17 +29,29 @@ body {
   @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
 }
 
+/* soft "pressed" buttons in the brand colour */
 .btn-wine {
-  @apply inline-flex items-center justify-center gap-2 rounded-full bg-wine px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wine/20 transition hover:bg-wine-dark disabled:opacity-60;
+  @apply inline-flex items-center justify-center gap-2 rounded-[10px] bg-wine px-6 py-3 text-sm font-semibold text-ink/85 disabled:opacity-60;
+  box-shadow: -4px -4px 12px rgba(255, 255, 255, 0.7), 4px 4px 12px rgba(140, 74, 74, 0.3), inset 4px 4px 8px #ecc4c4, inset -4px -4px 8px #b98282;
+  transition: box-shadow 500ms, color 500ms;
+}
+.btn-wine:hover {
+  @apply text-ink;
+  box-shadow: -4px -4px 12px rgba(255, 255, 255, 0.7), 4px 4px 12px rgba(140, 74, 74, 0.3), inset 4px 4px 8px #b98282, inset -4px -4px 8px #ecc4c4;
 }
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-full border border-wine/30 px-6 py-3 text-sm font-semibold text-wine transition hover:bg-blush;
+  @apply inline-flex items-center justify-center gap-2 rounded-[10px] bg-cream px-6 py-3 text-sm font-semibold text-wine-ink;
+  box-shadow: -4px -4px 12px #ffffff, 4px 4px 12px rgba(116, 0, 0, 0.18), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(116, 0, 0, 0.1);
+  transition: box-shadow 500ms;
+}
+.btn-ghost:hover {
+  box-shadow: -4px -4px 12px #ffffff, 4px 4px 12px rgba(116, 0, 0, 0.18), inset 3px 3px 6px rgba(116, 0, 0, 0.1), inset -3px -3px 6px #ffffff;
 }
 .field {
   @apply w-full rounded-xl border border-ink/10 bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-muted/60 focus:border-wine/50 focus:ring-4 focus:ring-wine/10;
 }
 .eyebrow {
-  @apply text-xs font-semibold uppercase tracking-[0.25em] text-wine;
+  @apply text-xs font-semibold uppercase tracking-[0.25em] text-wine-ink;
 }
 .section-title {
   @apply font-display text-3xl font-semibold text-ink sm:text-4xl;
@@ -48,12 +61,19 @@ body {
 .prose-gift {
   @apply text-[16px] leading-relaxed text-ink/85;
 }
+.prose-gift h1 { @apply mb-4 mt-2 font-display text-3xl font-semibold text-ink; }
 .prose-gift h2 { @apply mb-3 mt-8 font-display text-2xl font-semibold text-ink; }
+.prose-gift h4, .prose-gift h5, .prose-gift h6 { @apply mb-2 mt-5 text-lg font-semibold text-ink; }
+.prose-gift.check-list ul { @apply mb-2 list-none pl-0; }
+.prose-gift.check-list p { @apply mb-2; }
+.check-list li { @apply relative mb-1.5 pl-7; list-style: none !important; }
+.check-list li:empty, .check-list li:has(> br:only-child) { display: none; }
+.check-list li::before { content: '✓'; @apply absolute left-0 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-wine text-[11px] font-bold text-ink; }
 .prose-gift h3 { @apply mb-2 mt-6 text-xl font-semibold text-ink; }
 .prose-gift p { @apply mb-4; }
 .prose-gift ul { @apply mb-4 list-disc pl-6; }
 .prose-gift ol { @apply mb-4 list-decimal pl-6; }
-.prose-gift a { @apply text-wine underline; }
+.prose-gift a { @apply text-wine-ink underline; }
 .prose-gift img { @apply my-4 rounded-2xl; }
 .prose-gift blockquote { @apply my-4 border-l-4 border-gold pl-4 italic; }
 .prose-gift table { @apply my-4 w-full border-collapse; }

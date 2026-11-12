@@ -7,15 +7,14 @@ import { useEffect } from 'react';
 import { useCart } from './CartProvider';
 import { Price } from './Currency';
 import { IconArrowRight, IconMinus, IconPlus, IconTrash, IconX } from './Icons';
-import { img, salePrice } from '@/lib/utils';
 
 const direct = (src) => src?.startsWith('/api/uploads/');
 
 /** Slide-in cart from the right, plus a "View Cart" bar at the bottom that reopens it. */
 export default function CartDrawer() {
-  const { items, ready, count, subtotal, add, setQty, remove, drawer, openCart, closeCart } = useCart();
+  const { items, ready, count, subtotal, setQty, remove, drawer, openCart, closeCart } = useCart();
   const pathname = usePathname();
-  const { open, suggestions } = drawer;
+  const { open } = drawer;
 
   useEffect(() => {
     closeCart();
@@ -28,7 +27,6 @@ export default function CartDrawer() {
     return () => document.removeEventListener('keydown', esc);
   }, [open, closeCart]);
 
-  const extras = suggestions.filter((s) => !items.some((i) => i.productId === s._id)).slice(0, 4);
   const hideBar = !ready || !count || open || pathname === '/cart' || pathname === '/checkout';
 
   return (
@@ -36,7 +34,7 @@ export default function CartDrawer() {
       {!hideBar && (
         <button
           onClick={() => openCart()}
-          className="fixed bottom-4 left-4 right-24 z-40 flex animate-rise items-center gap-3 rounded-xl bg-wine px-4 py-3 text-white shadow-2xl sm:left-1/2 sm:right-auto sm:w-[420px] sm:-translate-x-1/2"
+          className="fixed bottom-4 left-4 right-24 z-40 flex animate-rise items-center gap-3 rounded-xl bg-wine px-4 py-3 text-ink shadow-2xl sm:left-1/2 sm:right-auto sm:w-[420px] sm:-translate-x-1/2"
         >
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-white text-sm font-bold">{count}</span>
           <span className="flex-1 text-center font-bold">View Cart</span>
@@ -66,7 +64,7 @@ export default function CartDrawer() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-sm font-medium">{it.name}</p>
-                    <p className="mt-1 text-sm font-semibold text-wine"><Price value={it.price * it.qty} /></p>
+                    <p className="mt-1 text-sm font-semibold text-wine-ink"><Price value={it.price * it.qty} /></p>
                   </div>
                   <div className="flex h-fit items-center rounded-lg border border-ink/15">
                     {it.qty > 1 ? (
@@ -81,31 +79,8 @@ export default function CartDrawer() {
               ))}
             </ul>
 
-            {extras.length > 0 && (
-              <div className="border-t border-ink/10 py-4">
-                <h3 className="mb-3 text-sm font-semibold">Add something extra</h3>
-                <ul className="space-y-2">
-                  {extras.map((s) => (
-                    <li key={s._id} className="flex items-center gap-3 rounded-xl border border-ink/5 p-2">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-blush">
-                        <Image src={img(s.coverImage)} alt="" fill sizes="48px" unoptimized={direct(s.coverImage)} className="object-cover" />
-                      </div>
-                      <span className="line-clamp-1 flex-1 text-sm">{s.name}</span>
-                      <span className="text-sm font-semibold text-wine"><Price value={salePrice(s.price)} /></span>
-                      <button
-                        onClick={() => add({ productId: s._id, slug: s.slug, name: s.name, image: img(s.coverImage), price: salePrice(s.price), qty: 1, variations: {}, freeDelivery: !!s.freeDelivery, options: {} }, { silent: true })}
-                        className="rounded-full bg-wine p-1.5 text-white"
-                        aria-label={`Add ${s.name}`}
-                      >
-                        <IconPlus width={14} height={14} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
-            <Link href="/categories" onClick={closeCart} className="block border-t border-ink/10 py-4 text-sm text-muted hover:text-wine">+ Add more items</Link>
+            <Link href="/categories" onClick={closeCart} className="block border-t border-ink/10 py-4 text-sm text-muted hover:text-wine-ink">+ Add more items</Link>
           </div>
 
           <div className="border-t border-ink/10 p-5">

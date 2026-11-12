@@ -53,7 +53,7 @@ export function PhotoInput({ value, onChange, label }) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={value} alt="" className="h-12 w-12 rounded-lg object-cover" />
       ) : (
-        <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-blush text-wine"><IconUpload width={18} height={18} /></span>
+        <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-blush text-wine-ink"><IconUpload width={18} height={18} /></span>
       )}
       <span className="flex-1">
         <span className="block font-medium">{label}</span>
@@ -80,7 +80,7 @@ export function PhotoInput({ value, onChange, label }) {
   );
 }
 
-export default function BuyBox({ product, whatsapp, suggestions = [] }) {
+export default function BuyBox({ product, whatsapp, suggestions = [], intro, children }) {
   const { add, openCart } = useCart();
   const groups = Object.entries(product.variations || {}).filter(([, opts]) => opts?.length);
   const [chosen, setChosen] = useState(() => Object.fromEntries(groups.map(([g, opts]) => [g, opts[0].value])));
@@ -141,9 +141,10 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
   return (
     <div className="mt-6">
       <div className="flex items-baseline gap-2">
-        <span className="font-display text-4xl font-semibold text-wine"><Price value={price} /></span>
+        <span className="font-display text-4xl font-semibold text-wine-ink"><Price value={price} /></span>
         {product.off > 0 && <span className="text-lg font-semibold text-muted">{product.off}% off</span>}
       </div>
+      {intro}
 
       {groups.map(([g, opts]) => (
         <div key={g} className="mt-6">
@@ -154,7 +155,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
                 key={o.value}
                 type="button"
                 onClick={() => setChosen((c) => ({ ...c, [g]: o.value }))}
-                className={`rounded-full border px-4 py-2 text-sm transition ${chosen[g] === o.value ? 'border-wine bg-wine text-white' : 'border-ink/15 bg-white hover:border-wine'}`}
+                className={`rounded-full border px-4 py-2 text-sm transition ${chosen[g] === o.value ? 'border-wine bg-wine text-ink' : 'border-ink/15 bg-white hover:border-wine'}`}
               >
                 {o.label || o.value}
                 {o.price ? <span className="ml-1 opacity-70">+<Price value={o.price} /></span> : null}
@@ -172,12 +173,12 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
               <label key={m.value} className="flex cursor-pointer items-center gap-3 rounded-xl border border-ink/10 bg-white p-3 text-sm">
                 <input
                   type="checkbox"
-                  className="accent-[#740000]"
+                  className="accent-[#d8a2a2]"
                   checked={mods.includes(m.value)}
                   onChange={(e) => setMods((l) => (e.target.checked ? [...l, m.value] : l.filter((x) => x !== m.value)))}
                 />
                 <span className="flex-1">{m.value}</span>
-                {m.price ? <span className="font-semibold text-wine">+<Price value={m.price} /></span> : null}
+                {m.price ? <span className="font-semibold text-wine-ink">+<Price value={m.price} /></span> : null}
               </label>
             ))}
           </div>
@@ -186,7 +187,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
 
       {product.form?.fields?.length > 0 && (
         <div className="mt-6 space-y-3 rounded-2xl bg-blush/60 p-4">
-          <div className="text-sm font-semibold text-wine">{product.form.name}</div>
+          <div className="text-sm font-semibold text-wine-ink">{product.form.name}</div>
           {product.form.fields.map((f) => {
             const set = (v) => setFields((x) => ({ ...x, [f.name]: v }));
             const ph = f.label + (f.required ? ' *' : '');
@@ -213,7 +214,13 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
         </div>
       )}
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-3">
+      <p className="mt-6 text-sm font-semibold">
+        Want to customize this gift? 💝 Add anything you want, just contact us on{' '}
+        <a href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, I want to customize: ${product.name}`)}`} target="_blank" rel="noreferrer" className="text-[#128C7E] underline">WhatsApp!</a>
+      </p>
+      <p className="mt-3 rounded-xl bg-blush/60 p-3 text-sm">💝 Please Note: If an item is not available, we will replace it with a similar item of the same value.</p>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <button onClick={addToCart} className="btn-wine py-3.5">
           <IconBag width={18} height={18} /> Add to cart
         </button>
@@ -230,7 +237,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [] }) {
         </button>
       </div>
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-      <p className="mt-5 rounded-xl bg-blush/60 p-3 text-sm">💝 Please Note: If an item is not available, we will replace it with a similar item of the same value.</p>
+      {children}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { IconGift, IconHeart, IconShield, IconTruck } from '@/components/Icons';
 
-export const metadata = { title: 'About Us', description: 'The story behind TheGiftsForever — Pakistan’s thoughtful online gifting studio.' };
+export const metadata = { title: 'About Us', description: 'The story behind TheGiftsForever — Pakistan’s thoughtful online gifting studio.', alternates: { canonical: '/about' } };
 
 const VALUES = [
   [IconHeart, 'Made with heart', 'Every hamper is assembled by hand and checked twice before it leaves our studio.'],
@@ -31,7 +31,7 @@ export default function About() {
           <div className="mt-8 grid grid-cols-3 gap-4 text-center">
             {[['25k+', 'Gifts delivered'], ['120+', 'Cities served'], ['4.9★', 'Average rating']].map(([n, l]) => (
               <div key={l} className="rounded-2xl bg-white p-4">
-                <div className="font-display text-3xl font-semibold text-wine">{n}</div>
+                <div className="font-display text-3xl font-semibold text-wine-ink">{n}</div>
                 <div className="mt-1 text-xs text-muted">{l}</div>
               </div>
             ))}
@@ -41,7 +41,7 @@ export default function About() {
       <section className="container-x mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {VALUES.map(([Icon, t, d]) => (
           <div key={t} className="rounded-3xl bg-white p-7">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blush text-wine"><Icon /></span>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-blush text-wine-ink"><Icon /></span>
             <h3 className="mt-5 text-lg font-semibold">{t}</h3>
             <p className="mt-2 text-sm text-muted">{d}</p>
           </div>

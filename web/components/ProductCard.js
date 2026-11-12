@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { img, percentOff, salePrice } from '@/lib/utils';
+import { img, salePrice } from '@/lib/utils';
 import { Price } from './Currency';
 import { IconTruck } from './Icons';
 
 export default function ProductCard({ p, priority = false }) {
   const sale = salePrice(p.price);
-  const off = percentOff(p.price, p.comparePrice);
+  const off = Number(p.discount) || 0;
   return (
     <Link href={`/product/${p.slug}`} className="group flex flex-col">
       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-blush">
@@ -24,13 +24,13 @@ export default function ProductCard({ p, priority = false }) {
             <IconTruck width={13} height={13} /> Free
           </span>
         )}
-        <span className="absolute inset-x-3 bottom-3 translate-y-3 rounded-full bg-white/95 py-2.5 text-center text-xs font-semibold text-wine opacity-0 shadow-lg transition group-hover:translate-y-0 group-hover:opacity-100">
+        <span className="absolute inset-x-3 bottom-3 translate-y-3 rounded-full bg-white/95 py-2.5 text-center text-xs font-semibold text-wine-ink opacity-0 shadow-lg transition group-hover:translate-y-0 group-hover:opacity-100">
           View gift
         </span>
       </div>
-      <h3 className="mt-3 line-clamp-2 text-[14.5px] font-medium leading-snug text-ink transition group-hover:text-wine">{p.name}</h3>
+      <h3 className="mt-3 line-clamp-2 text-[14.5px] font-medium leading-snug text-ink transition group-hover:text-wine-ink">{p.name}</h3>
       <div className="mt-1.5 flex items-baseline gap-2">
-        <span className="text-[15px] font-bold text-wine"><Price value={sale} /></span>
+        <span className="text-[15px] font-bold text-wine-ink"><Price value={sale} /></span>
         {off > 0 && <span className="text-xs font-semibold text-muted">{off}% off</span>}
       </div>
     </Link>

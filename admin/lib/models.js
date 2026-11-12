@@ -43,6 +43,8 @@ const CategorySchema = new Schema(
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     parent: { type: ObjectId, ref: 'Category', default: null },
+    alsoIn: [{ type: ObjectId, ref: 'Category' }],
+    modifierCategories: [{ type: ObjectId, ref: 'Category' }],
     image: String,
     imageName: String,
     metaTitle: String,
@@ -310,6 +312,8 @@ const WebsiteSchema = new Schema(
     tiktok: String,
     youtube: String,
     twitter: String,
+    linkedin: String,
+    pinterest: String,
     active: { type: Boolean, default: true },
   },
   { timestamps: true }

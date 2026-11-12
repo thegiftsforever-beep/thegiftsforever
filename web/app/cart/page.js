@@ -16,7 +16,7 @@ export default function CartPage() {
       <h1 className="mt-10 font-display text-4xl font-semibold">Your cart</h1>
       {!ready ? null : items.length === 0 ? (
         <div className="mt-10 flex flex-col items-center gap-4 rounded-3xl bg-white p-16 text-center">
-          <IconBag width={40} height={40} className="text-wine" />
+          <IconBag width={40} height={40} className="text-wine-ink" />
           <p className="text-muted">Your cart is empty — let’s find something lovely.</p>
           <Link href="/categories" className="btn-wine">Start shopping</Link>
         </div>
@@ -29,7 +29,7 @@ export default function CartPage() {
                   <Image src={it.image || '/placeholder.svg'} alt="" fill unoptimized={it.image?.startsWith('/api/uploads/')} sizes="112px" className="object-cover" />
                 </Link>
                 <div className="flex min-w-0 flex-1 flex-col">
-                  <Link href={`/product/${it.slug}`} className="line-clamp-2 font-medium hover:text-wine">{it.name}</Link>
+                  <Link href={`/product/${it.slug}`} className="line-clamp-2 font-medium hover:text-wine-ink">{it.name}</Link>
                   <div className="mt-1 space-y-0.5 text-xs text-muted">
                     {Object.entries(it.options || {}).map(([k, v]) => (
                       <div key={k}>{k}: {String(v).startsWith('/api/uploads/') ? 'photo uploaded' : String(v)}</div>
@@ -41,7 +41,7 @@ export default function CartPage() {
                       <span className="w-7 text-center text-sm">{it.qty}</span>
                       <button onClick={() => setQty(it.key, it.qty + 1)} className="p-2" aria-label="Increase"><IconPlus width={14} height={14} /></button>
                     </div>
-                    <span className="font-semibold text-wine"><Price value={it.price * it.qty} /></span>
+                    <span className="font-semibold text-wine-ink"><Price value={it.price * it.qty} /></span>
                   </div>
                 </div>
                 <button onClick={() => remove(it.key)} className="self-start p-1 text-muted hover:text-red-600" aria-label="Remove"><IconTrash width={18} height={18} /></button>
@@ -52,7 +52,7 @@ export default function CartPage() {
             <h2 className="font-display text-2xl font-semibold">Summary</h2>
             <div className="mt-5 flex justify-between text-sm"><span>Subtotal</span><span><Price value={subtotal} /></span></div>
             <div className="mt-2 flex justify-between text-sm text-muted"><span>Delivery</span><span>Calculated at checkout</span></div>
-            <div className="mt-5 flex justify-between border-t border-ink/5 pt-5 text-lg font-semibold"><span>Total</span><span className="text-wine"><Price value={subtotal} /></span></div>
+            <div className="mt-5 flex justify-between border-t border-ink/5 pt-5 text-lg font-semibold"><span>Total</span><span className="text-wine-ink"><Price value={subtotal} /></span></div>
             <Link href="/checkout" className="btn-wine mt-6 w-full py-4 text-base">Checkout <IconArrowRight width={18} height={18} /></Link>
             <Link href="/categories" className="mt-3 block text-center text-sm text-muted underline">Continue shopping</Link>
           </aside>

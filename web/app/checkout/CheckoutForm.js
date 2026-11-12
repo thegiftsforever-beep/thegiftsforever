@@ -30,7 +30,7 @@ function DetailLine({ line }) {
               setTimeout(() => setCopied(false), 1500);
             } catch {}
           }}
-          className="flex shrink-0 items-center gap-1 text-sm font-semibold text-wine"
+          className="flex shrink-0 items-center gap-1 text-sm font-semibold text-wine-ink"
         >
           <IconCopy width={15} height={15} /> {copied ? 'Copied' : 'Copy'}
         </button>
@@ -41,7 +41,7 @@ function DetailLine({ line }) {
 
 const Label = ({ children, optional }) => (
   <span className="mb-1.5 block text-sm font-medium">
-    {children} {optional ? <span className="font-semibold text-wine">(Optional)</span> : <span className="text-red-600">*</span>}
+    {children} {optional ? <span className="font-semibold text-wine-ink">(Optional)</span> : <span className="text-red-600">*</span>}
   </span>
 );
 
@@ -111,7 +111,7 @@ export default function CheckoutForm({ delivery, payments, freeOver }) {
             <h1 className="font-display text-2xl font-semibold">Recipient Information</h1>
             <div className="flex rounded-full bg-ink/5 p-1 text-sm font-semibold">
               {[[true, 'Send as a Gift'], [false, 'Deliver to Me']].map(([v, l]) => (
-                <button key={l} type="button" onClick={() => setGift(v)} className={`rounded-full px-4 py-2 transition ${gift === v ? 'bg-wine text-white' : 'text-muted'}`}>{l}</button>
+                <button key={l} type="button" onClick={() => setGift(v)} className={`rounded-full px-4 py-2 transition ${gift === v ? 'bg-wine text-ink' : 'text-muted'}`}>{l}</button>
               ))}
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function CheckoutForm({ delivery, payments, freeOver }) {
             <div className="grid gap-4 sm:grid-cols-2">
               {delivery.map((d) => (
                 <label key={d.name} className={radio(f.deliveryOption === d.name)}>
-                  <input type="radio" name="delivery" value={d.name} checked={f.deliveryOption === d.name} onChange={t('deliveryOption').onChange} className="mt-1 accent-[#740000]" />
+                  <input type="radio" name="delivery" value={d.name} checked={f.deliveryOption === d.name} onChange={t('deliveryOption').onChange} className="mt-1 accent-[#d8a2a2]" />
                   <span><span className="block font-semibold">{d.name}</span><span className="text-sm text-muted"><Price value={d.price} /></span></span>
                 </label>
               ))}
@@ -190,7 +190,7 @@ export default function CheckoutForm({ delivery, payments, freeOver }) {
           </div>
           {fee > 0 && freeOver > 0 && <p className="text-xs text-muted">Free delivery on orders over <Price value={freeOver} /></p>}
 
-          <div className="flex justify-between border-y border-ink/10 py-4 text-lg font-semibold"><span>Total</span><span className="text-wine"><Price value={subtotal + fee} /></span></div>
+          <div className="flex justify-between border-y border-ink/10 py-4 text-lg font-semibold"><span>Total</span><span className="text-wine-ink"><Price value={subtotal + fee} /></span></div>
 
           <div>
             <h2 className="mb-3 font-display text-xl font-semibold">Select Payment Method</h2>
@@ -200,7 +200,7 @@ export default function CheckoutForm({ delivery, payments, freeOver }) {
                 return (
                   <div key={p.name} className={`rounded-2xl border p-4 ${active ? 'border-wine bg-blush/40' : 'border-ink/10'}`}>
                     <label className="flex cursor-pointer items-center gap-3 font-semibold">
-                      <input type="radio" name="pay" value={p.name} checked={active} onChange={t('paymentMethod').onChange} className="accent-[#740000]" />
+                      <input type="radio" name="pay" value={p.name} checked={active} onChange={t('paymentMethod').onChange} className="accent-[#d8a2a2]" />
                       {p.name}
                     </label>
                     {active && p.details && (

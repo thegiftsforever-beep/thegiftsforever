@@ -13,8 +13,8 @@ export default function Footer({ site, categories, pages }) {
             loved ones across Pakistan, from anywhere in the world.
           </p>
           <div className="mt-6 flex gap-3">
-            {SOCIALS.map(([k, I]) => (
-              <a key={k} href={site.social[k] || '#'} target="_blank" rel="noreferrer" aria-label={k} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 transition hover:border-gold hover:text-gold">
+            {SOCIALS.filter(([k]) => site.social[k]).map(([k, I]) => (
+              <a key={k} href={site.social[k]} target="_blank" rel="noreferrer" aria-label={k} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 transition hover:border-gold hover:text-gold">
                 <I width={18} height={18} />
               </a>
             ))}

@@ -4,7 +4,7 @@ import PageHeader from '@/components/PageHeader';
 import { getBlogs } from '@/lib/data';
 import { img } from '@/lib/utils';
 
-export const metadata = { title: 'Gifting Blog', description: 'Gift ideas, occasion guides and flower care tips from TheGiftsForever.' };
+export const metadata = { title: 'Gifting Blog', description: 'Gift ideas, occasion guides and flower care tips from TheGiftsForever.', alternates: { canonical: '/blogs' } };
 
 export default async function Blogs() {
   const blogs = await getBlogs();
@@ -21,7 +21,7 @@ export default async function Blogs() {
             </div>
             <div className="flex flex-col justify-center p-8 sm:p-12">
               <p className="eyebrow">Featured</p>
-              <h2 className="mt-3 font-display text-3xl font-semibold group-hover:text-wine">{first.title}</h2>
+              <h2 className="mt-3 font-display text-3xl font-semibold group-hover:text-wine-ink">{first.title}</h2>
               <p className="mt-4 text-muted">{first.excerpt}</p>
               <span className="mt-6 text-sm text-muted">{first.author} · {new Date(first.createdAt).toLocaleDateString('en-GB', { dateStyle: 'medium' })}</span>
             </div>
@@ -33,7 +33,7 @@ export default async function Blogs() {
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-blush">
                 <Image src={img(b.coverImage)} alt={b.title} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />
               </div>
-              <h3 className="mt-4 font-display text-xl font-semibold group-hover:text-wine">{b.title}</h3>
+              <h3 className="mt-4 font-display text-xl font-semibold group-hover:text-wine-ink">{b.title}</h3>
               <p className="mt-2 line-clamp-2 text-sm text-muted">{b.excerpt}</p>
             </Link>
           ))}

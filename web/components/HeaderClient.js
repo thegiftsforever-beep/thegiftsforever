@@ -42,25 +42,25 @@ export default function HeaderClient({ menu, site }) {
     <form onSubmit={submit} className="flex w-full items-center gap-2 rounded-full border border-ink/10 bg-white py-1 pl-4 pr-1 shadow-sm">
       <IconSearch width={18} height={18} className="shrink-0 text-muted" />
       <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search roses, chocolates, cakes…" className="min-w-0 flex-1 bg-transparent py-1.5 text-sm outline-none" />
-      <button className="rounded-full bg-wine px-4 py-1.5 text-sm font-semibold text-white">Search</button>
+      <button className="rounded-full bg-wine px-4 py-1.5 text-sm font-semibold text-ink">Search</button>
     </form>
   );
 
   return (
     <>
-      <div className="bg-wine text-[12.5px] text-white/90">
+      <div className="bg-wine text-[12.5px] text-ink">
         <div className="container-x flex h-9 items-center justify-between gap-4">
           <div className="flex min-w-0 items-center gap-4">
-            <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="flex shrink-0 items-center gap-1.5 hover:text-white">
+            <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="flex shrink-0 items-center gap-1.5 hover:text-ink">
               <IconPhone width={14} height={14} /> {site.phone}
             </a>
-            <a href={`mailto:${site.email}`} className="hidden items-center gap-1.5 hover:text-white sm:flex">
+            <a href={`mailto:${site.email}`} className="hidden items-center gap-1.5 hover:text-ink sm:flex">
               <IconMail width={14} height={14} /> {site.email}
             </a>
           </div>
           <div className="flex items-center gap-3">
-            {SOCIALS.map(([k, I]) => (
-              <a key={k} href={site.social[k] || '#'} target="_blank" rel="noreferrer" aria-label={k} className="hover:text-white">
+            {SOCIALS.filter(([k]) => site.social[k]).map(([k, I]) => (
+              <a key={k} href={site.social[k]} target="_blank" rel="noreferrer" aria-label={k} className="hover:text-ink">
                 <I width={15} height={15} />
               </a>
             ))}
@@ -77,10 +77,10 @@ export default function HeaderClient({ menu, site }) {
           <div className="mx-auto hidden w-full max-w-xl md:block">{searchBox}</div>
           <div className="ml-auto flex items-center gap-2 md:ml-0">
             <CurrencySelect />
-            <Link href="/cart" className="relative ml-2 p-1 text-ink transition hover:text-wine" aria-label="Cart">
+            <Link href="/cart" className="relative ml-2 p-1 text-ink transition hover:text-wine-ink" aria-label="Cart">
               <IconCart width={34} height={34} strokeWidth={2} />
               {count > 0 && (
-                <span className="absolute -left-3 top-2.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wine px-1 text-[11px] font-bold text-white">
+                <span className="absolute -left-3 top-2.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wine px-1 text-[11px] font-bold text-ink">
                   {count}
                 </span>
               )}
@@ -90,7 +90,7 @@ export default function HeaderClient({ menu, site }) {
         <div className="container-x pb-3 md:hidden">{searchBox}</div>
         <nav className="container-x hidden h-11 items-center justify-center gap-7 border-t border-ink/5 xl:flex">
           {links.map(([l, h]) => (
-            <Link key={h} href={h} className={`whitespace-nowrap text-[14.5px] font-medium transition hover:text-wine ${pathname === h ? 'text-wine' : 'text-ink/80'}`}>
+            <Link key={h} href={h} className={`whitespace-nowrap text-[14.5px] font-medium transition hover:text-wine-ink ${pathname === h ? 'text-wine-ink' : 'text-ink/80'}`}>
               {l}
             </Link>
           ))}
@@ -113,7 +113,7 @@ export default function HeaderClient({ menu, site }) {
               <div className="mt-6 eyebrow">More occasions</div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {menu.slice(4).map((c) => (
-                  <Link key={c.slug} href={`/category/${c.slug}`} className="rounded-full bg-blush px-3 py-1.5 text-sm text-wine">{c.name}</Link>
+                  <Link key={c.slug} href={`/category/${c.slug}`} className="rounded-full bg-blush px-3 py-1.5 text-sm text-wine-ink">{c.name}</Link>
                 ))}
               </div>
             </nav>

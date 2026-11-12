@@ -3,7 +3,7 @@ import ContactForm from '@/components/ContactForm';
 import { IconClock, IconMail, IconPhone, IconPin, IconWhatsApp } from '@/components/Icons';
 import { getSite } from '@/lib/data';
 
-export const metadata = { title: 'Contact Us', description: 'Talk to our gifting team on WhatsApp, phone or email.' };
+export const metadata = { title: 'Contact Us', description: 'Talk to our gifting team on WhatsApp, phone or email.', alternates: { canonical: '/contact' } };
 
 export default async function Contact() {
   const site = await getSite();
@@ -23,11 +23,11 @@ export default async function Contact() {
           {cards.map(([Icon, t, d, href, v]) => {
             const body = (
               <>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blush text-wine"><Icon /></span>
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blush text-wine-ink"><Icon /></span>
                 <span>
                   <span className="block font-semibold">{t}</span>
                   <span className="block text-xs text-muted">{d}</span>
-                  <span className="mt-1 block text-sm text-wine">{v}</span>
+                  <span className="mt-1 block text-sm text-wine-ink">{v}</span>
                 </span>
               </>
             );
