@@ -72,7 +72,7 @@ export default async function Home() {
             {topCats.map((c) => (
               <Link key={c._id} href={`/category/${c.slug}`} className="group w-28 shrink-0 snap-start text-center sm:w-auto">
                 <div className="relative mx-auto aspect-square overflow-hidden rounded-full border-4 border-white bg-blush shadow-md ring-1 ring-ink/5">
-                  <Image src={img(c.image)} alt="" fill sizes="140px" className="object-cover transition duration-500 group-hover:scale-110" />
+                  <Image src={img(c.image)} alt={c.imageName || c.name} fill sizes="140px" className="object-cover transition duration-500 group-hover:scale-110" />
                 </div>
                 <span className="mt-3 block text-[13.5px] font-medium leading-tight group-hover:text-wine-ink">{c.name}</span>
               </Link>

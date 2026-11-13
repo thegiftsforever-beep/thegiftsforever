@@ -40,7 +40,7 @@ export const getMenuCategories = cache(async () => {
 
 export async function getAllCategories() {
   await dbConnect();
-  return plain(await Category.find(visible, 'name slug image parent').sort({ sort: 1, name: 1 }).lean());
+  return plain(await Category.find(visible, 'name slug image imageName parent').sort({ sort: 1, name: 1 }).lean());
 }
 
 export async function getSlides() {
@@ -142,16 +142,19 @@ export const getRates = cache(async () => {
 });
 
 /** Rows of products shown under the buy buttons: the categories picked under "Modifiers" on the product's category. */
-export async function getModifierRows(categoryId, productId, perRow = 8) {
-  if (!categoryId) return [];
+export async function getModifierRows(product, perRow = 8) {
+  const own = [product.category?._id || product.category, ...(product.categories || [])].filter(Boolean);
+  if (!own.length) return [];
   await dbConnect();
-  const cat = await Category.findById(categoryId, 'modifierCategories').lean();
-  const ids = cat?.modifierCategories || [];
+  const cats = await Category.find({ _id: { $in: own } }, 'parent modifierCategories').lean();
+  const parents = await Category.find({ _id: { $in: cats.map((c) => c.parent).filter(Boolean) } }, 'modifierCategories').lean();
+  const ids = [...new Set([...cats, ...parents].flatMap((c) => (c.modifierCategories || []).map(String)))];
   if (!ids.length) return [];
-  const cats = await Category.find({ _id: { $in: ids }, ...visible }, 'name slug').lean();
+  const productId = product._id;
+  const shown = await Category.find({ _id: { $in: ids }, ...visible }, 'name slug').lean();
   const rows = await Promise.all(
     ids.map(async (id) => {
-      const category = cats.find((x) => String(x._id) === String(id));
+      const category = shown.find((x) => String(x._id) === String(id));
       if (!category) return null;
       const items = await Product.find({ ...visible, _id: { $ne: productId }, $or: [{ category: id }, { categories: id }] }, CARD).sort({ featured: -1, createdAt: -1 }).limit(perRow).lean();
       return items.length ? { category, items } : null;

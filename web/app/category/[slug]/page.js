@@ -39,6 +39,19 @@ export default async function CategoryPage({ params, searchParams }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            { '@context': 'https://schema.org', '@type': 'CollectionPage', name: c.metaTitle || c.name, description: c.metaDescription, url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/category/${c.slug}` },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [['Home', '/'], ['Categories', '/categories'], [c.name, `/category/${c.slug}`]].map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${process.env.NEXT_PUBLIC_SITE_URL || ''}${path}` })),
+            },
+          ]),
+        }}
+      />
       <PageHeader title={c.name} titleAs={hasH1(description) ? 'p' : 'h1'} eyebrow="Collection" crumbs={[['Categories', '/categories'], [c.name]]}>
         <p className="mt-3 text-muted">{total} gift{total === 1 ? '' : 's'} available</p>
       </PageHeader>

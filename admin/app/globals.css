@@ -65,6 +65,7 @@ table.data tbody td {
 .rte-body h1 { font-size: 1.75rem; font-weight: 700; margin: .5rem 0; }
 .rte-body h2 { font-size: 1.4rem; font-weight: 700; margin: .5rem 0; }
 .rte-body h3 { font-size: 1.15rem; font-weight: 700; margin: .5rem 0; }
+.rte-body h4, .rte-body h5, .rte-body h6 { font-size: 1rem; font-weight: 700; margin: .5rem 0; }
 .rte-body a { color: #2563eb; text-decoration: underline; }
 .rte-body img { max-width: 100%; border-radius: 8px; }
 .rte-body table { border-collapse: collapse; width: 100%; }

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Gallery from '@/components/Gallery';
@@ -36,7 +37,7 @@ export default async function ProductPage({ params }) {
     getSuggestions(p),
     getSite(),
     getReviews({ kind: 'category', category: p.category?._id, limit: 6 }),
-    getModifierRows(p.category?._id, p._id),
+    getModifierRows(p),
   ]);
   const images = [p.coverImage, ...(p.gallery || [])].filter(Boolean).map(img);
   const yt = youtubeId(p.youtubeUrl);

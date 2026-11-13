@@ -12,6 +12,27 @@ const B = ({ title, onClick, children }) => (
 
 const s = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
 
+/**
+ * Google Docs pastes headings as <h1 aria-level="6">; the storefront reads aria-level as the real level,
+ * which made a heading picked here (e.g. H1) show as H4. Settle each one to its aria-level once,
+ * then drop the attribute so whatever is picked from the Format menu afterwards is kept.
+ */
+function fixDocsHeadings(root) {
+  if (!root) return false;
+  const els = root.querySelectorAll('[aria-level]');
+  els.forEach((el) => {
+    const lvl = el.getAttribute('aria-level');
+    el.removeAttribute('aria-level');
+    if (/^H[1-6]$/.test(el.tagName) && /^[1-6]$/.test(lvl) && el.tagName !== `H${lvl}`) {
+      const h = document.createElement(`h${lvl}`);
+      for (const a of el.attributes) h.setAttribute(a.name, a.value);
+      h.innerHTML = el.innerHTML;
+      el.replaceWith(h);
+    }
+  });
+  return els.length > 0;
+}
+
 /** Lightweight WYSIWYG editor (no external API key) producing HTML. */
 export default function RichText({ value, onChange, placeholder = 'Enter the Description', folder = 'pages' }) {
   const ref = useRef(null);
@@ -20,11 +41,15 @@ export default function RichText({ value, onChange, placeholder = 'Enter the Des
   const [source, setSource] = useState(false);
 
   useEffect(() => {
-    if (ref.current && !source && ref.current.innerHTML !== (value || '')) ref.current.innerHTML = value || '';
-  }, [value, source]);
+    if (ref.current && !source && ref.current.innerHTML !== (value || '')) {
+      ref.current.innerHTML = value || '';
+      if (fixDocsHeadings(ref.current)) onChange(ref.current.innerHTML);
+    }
+  }, [value, source, onChange]);
 
   const exec = (cmd, arg) => {
     document.execCommand(cmd, false, arg);
+    fixDocsHeadings(ref.current);
     onChange(ref.current.innerHTML);
   };
 
@@ -40,6 +65,9 @@ export default function RichText({ value, onChange, placeholder = 'Enter the Des
           <option value="h1">Heading 1 (only one per page)</option>
           <option value="h2">Heading 2</option>
           <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="h5">Heading 5</option>
+          <option value="h6">Heading 6</option>
           <option value="blockquote">Quote</option>
         </select>
         <B title="Bold" onClick={() => exec('bold')}><b>B</b></B>
@@ -83,7 +111,7 @@ export default function RichText({ value, onChange, placeholder = 'Enter the Des
           contentEditable
           suppressContentEditableWarning
           data-placeholder={placeholder}
-          onInput={() => onChange(ref.current.innerHTML)}
+          onInput={() => { fixDocsHeadings(ref.current); onChange(ref.current.innerHTML); }}
           className="rte-body px-5 py-4 text-[15px] leading-relaxed"
         />
       )}
