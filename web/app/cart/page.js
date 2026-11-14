@@ -26,7 +26,7 @@ export default function CartPage() {
             {items.map((it) => (
               <li key={it.key} className="flex gap-4 py-5">
                 <Link href={`/product/${it.slug}`} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-blush sm:h-28 sm:w-28">
-                  <Image src={it.image || '/placeholder.svg'} alt="" fill unoptimized={it.image?.startsWith('/api/uploads/')} sizes="112px" className="object-cover" />
+                  <Image src={it.image || '/placeholder.svg'} alt="" fill sizes="112px" className="object-cover" />
                 </Link>
                 <div className="flex min-w-0 flex-1 flex-col">
                   <Link href={`/product/${it.slug}`} className="line-clamp-2 font-medium hover:text-wine-ink">{it.name}</Link>

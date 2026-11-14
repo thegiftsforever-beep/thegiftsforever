@@ -15,7 +15,6 @@ export default function ProductCard({ p, priority = false }) {
           alt={p.name}
           fill
           priority={priority}
-          unoptimized={p.coverImage?.startsWith('/api/uploads/')}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition duration-700 group-hover:scale-105"
         />
@@ -28,7 +27,7 @@ export default function ProductCard({ p, priority = false }) {
           View gift
         </span>
       </div>
-      <h3 className="mt-3 line-clamp-2 text-[14.5px] font-medium leading-snug text-ink transition group-hover:text-wine-ink">{p.name}</h3>
+      <p className="mt-3 line-clamp-2 text-[14.5px] font-medium leading-snug text-ink transition group-hover:text-wine-ink">{p.name}</p>
       <div className="mt-1.5 flex items-baseline gap-2">
         <span className="text-[15px] font-bold text-wine-ink"><Price value={sale} /></span>
         {off > 0 && <span className="text-xs font-semibold text-muted">{off}% off</span>}

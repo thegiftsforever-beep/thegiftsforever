@@ -8,8 +8,6 @@ import { useCart } from './CartProvider';
 import { Price } from './Currency';
 import { IconArrowRight, IconMinus, IconPlus, IconTrash, IconX } from './Icons';
 
-const direct = (src) => src?.startsWith('/api/uploads/');
-
 /** Slide-in cart from the right, plus a "View Cart" bar at the bottom that reopens it. */
 export default function CartDrawer() {
   const { items, ready, count, subtotal, setQty, remove, drawer, openCart, closeCart } = useCart();
@@ -50,7 +48,7 @@ export default function CartDrawer() {
           className={`absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}
         >
           <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
-            <h2 className="font-display text-xl font-semibold">Your Cart</h2>
+            <p className="font-display text-xl font-semibold">Your Cart</p>
             <button onClick={closeCart} aria-label="Close cart" className="rounded border border-ink/20 p-1"><IconX width={18} height={18} /></button>
           </div>
 
@@ -60,7 +58,7 @@ export default function CartDrawer() {
               {items.map((it) => (
                 <li key={it.key} className="flex gap-3 py-4">
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-blush">
-                    <Image src={it.image || '/placeholder.svg'} alt="" fill sizes="64px" unoptimized={direct(it.image)} className="object-cover" />
+                    <Image src={it.image || '/placeholder.svg'} alt="" fill sizes="64px" className="object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="line-clamp-2 text-sm font-medium">{it.name}</p>

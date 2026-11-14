@@ -62,7 +62,7 @@ export default async function CategoryPage({ params, searchParams }) {
             {c.children.map((k) => (
               <Link key={k._id} href={`/category/${k.slug}`} className="flex items-center gap-3 border border-ink/10 bg-white pr-3 text-sm font-medium transition hover:border-wine">
                 <span className="relative h-20 w-20 shrink-0 bg-blush">
-                  <Image src={img(k.image)} alt="" fill sizes="80px" unoptimized={k.image?.startsWith('/api/uploads/')} className="object-cover" />
+                  <Image src={img(k.image)} alt="" fill sizes="80px" className="object-cover" />
                 </span>
                 {k.name}
               </Link>
@@ -72,7 +72,7 @@ export default async function CategoryPage({ params, searchParams }) {
 
         {shown.map(({ k, items: list, total: count }, idx) => (
           <section key={k._id} className={idx ? 'mt-16' : ''}>
-            <h2 className="section-title mb-7">{k.name}</h2>
+            <p className="section-title mb-7">{k.name}</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
               {list.map((p, i) => <ProductCard key={p._id} p={p} priority={idx === 0 && i < 4} />)}
             </div>
@@ -106,7 +106,7 @@ export default async function CategoryPage({ params, searchParams }) {
         )}
       </div>
 
-      <Faqs items={c.faqs} />
+      <Faqs items={c.faqs} title={`Frequently Asked Questions – Send ${c.name} to Pakistan`} />
 
       <Reviews reviews={reviews} title={`What customers say about ${c.name}`} />
     </>

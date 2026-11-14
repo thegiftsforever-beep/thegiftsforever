@@ -21,7 +21,7 @@ export default function Footer({ site, categories, pages }) {
           </div>
         </div>
         <div>
-          <h4 className="mb-5 font-display text-lg text-white">Shop</h4>
+          <p className="mb-5 font-display text-lg text-white">Shop</p>
           <ul className="space-y-2.5 text-sm">
             {categories.slice(0, 7).map((c) => (
               <li key={c.slug}><Link href={`/category/${c.slug}`} className="hover:text-gold">{c.name}</Link></li>
@@ -30,7 +30,7 @@ export default function Footer({ site, categories, pages }) {
           </ul>
         </div>
         <div>
-          <h4 className="mb-5 font-display text-lg text-white">Help</h4>
+          <p className="mb-5 font-display text-lg text-white">Help</p>
           <ul className="space-y-2.5 text-sm">
             <li><Link href="/about" className="hover:text-gold">About us</Link></li>
             <li><Link href="/contact" className="hover:text-gold">Contact</Link></li>
@@ -42,7 +42,7 @@ export default function Footer({ site, categories, pages }) {
           </ul>
         </div>
         <div>
-          <h4 className="mb-5 font-display text-lg text-white">Get in touch</h4>
+          <p className="mb-5 font-display text-lg text-white">Get in touch</p>
           <ul className="space-y-3.5 text-sm">
             <li className="flex gap-3"><IconPin width={18} height={18} className="mt-0.5 shrink-0 text-gold" /> {site.address}</li>
             <li className="flex gap-3"><IconPhone width={18} height={18} className="shrink-0 text-gold" /> <a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>

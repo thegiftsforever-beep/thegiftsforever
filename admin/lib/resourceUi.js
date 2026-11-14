@@ -369,6 +369,7 @@ export const UI = {
       { key: 'facebook', label: 'Facebook URL', type: 'text' },
       { key: 'instagram', label: 'Instagram URL', type: 'text' },
       { key: 'tiktok', label: 'TikTok URL', type: 'text' },
+      { key: 'youtube', label: 'YouTube URL', type: 'text' },
       { key: 'linkedin', label: 'LinkedIn URL', type: 'text', placeholder: 'Company page, e.g. https://www.linkedin.com/company/...' },
       { key: 'pinterest', label: 'Pinterest URL', type: 'text' },
       { type: 'flags', items: [['active', 'Active:', true]] },

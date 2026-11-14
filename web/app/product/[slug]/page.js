@@ -113,7 +113,7 @@ export default async function ProductPage({ params }) {
                   {items.map((m) => (
                     <Link key={m._id} href={`/product/${m.slug}`} className="w-32 shrink-0">
                       <div className="relative aspect-square overflow-hidden rounded-xl bg-blush">
-                        <Image src={img(m.coverImage)} alt="" fill sizes="128px" unoptimized={m.coverImage?.startsWith('/api/uploads/')} className="object-cover" />
+                        <Image src={img(m.coverImage)} alt="" fill sizes="128px" className="object-cover" />
                       </div>
                       <p className="mt-1.5 line-clamp-2 text-xs font-medium">{m.name}</p>
                       <p className="text-xs font-bold text-wine-ink"><Price value={salePrice(m.price)} /></p>

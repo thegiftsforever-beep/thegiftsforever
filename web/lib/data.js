@@ -27,6 +27,7 @@ export const getSite = cache(async () => {
       facebook: w?.facebook || 'https://www.facebook.com/thegiftsforever/',
       instagram: w?.instagram || 'https://www.instagram.com/thegiftsforever1/',
       tiktok: w?.tiktok || 'https://www.tiktok.com/@thegiftsforever',
+      youtube: w?.youtube || 'https://www.youtube.com/@TheGiftsForeverpk',
       linkedin: w?.linkedin || '',
       pinterest: w?.pinterest || 'https://www.pinterest.com/thegiftsforever/',
     },

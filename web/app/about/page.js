@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import { IconGift, IconHeart, IconShield, IconTruck } from '@/components/Icons';
 
-export const metadata = { title: 'About Us', description: 'The story behind TheGiftsForever — Pakistan’s thoughtful online gifting studio.', alternates: { canonical: '/about' } };
+export const metadata = { title: 'About Us', description: 'The Gifts Forever sends flowers, cakes, chocolates, gift baskets, perfumes and customized hampers to your loved ones in Pakistan from anywhere in the world.', alternates: { canonical: '/about' } };
 
 const VALUES = [
   [IconHeart, 'Made with heart', 'Every hamper is assembled by hand and checked twice before it leaves our studio.'],
@@ -22,11 +22,10 @@ export default function About() {
         </div>
         <div>
           <p className="eyebrow">Since 2019</p>
-          <h2 className="section-title mt-3">We bring people closer — one gift at a time</h2>
+          <h2 className="section-title mt-3">Making Every Moment Special, No Matter the Distance</h2>
           <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-ink/80">
-            <p>TheGiftsForever started with a simple idea: distance shouldn’t stop you from being there for the people you love. Whether you live in Dubai, London or down the road, we help you celebrate birthdays, anniversaries, Eid and every quiet “thinking of you” moment.</p>
-            <p>Our studio in Karachi curates fresh flowers, artisan cakes, gourmet chocolates and personalised keepsakes, then delivers them with care across Pakistan.</p>
-            <p>Thousands of smiles later, we’re still obsessed with the details — the ribbon, the card, the timing — because that’s what turns a present into a memory.</p>
+            <p>The Gifts Forever is an online gifting company specializing in beautiful flowers, delicious cakes, chocolates, premium gift baskets, perfumes, and customized gift hampers for every occasion. We make gifting easy and memorable by helping people send gifts to their loved ones in Pakistan from the USA, UK, UAE, Canada, Australia, Europe, and anywhere around the world. Whether it's a birthday, anniversary, wedding, or a special surprise, we bring your love closer through thoughtful gifts and memorable moments.</p>
+            <p className="font-semibold text-ink">The Gifts Forever Making Every Moment Special, No Matter the Distance! ❤️</p>
           </div>
           <div className="mt-8 grid grid-cols-3 gap-4 text-center">
             {[['25k+', 'Gifts delivered'], ['120+', 'Cities served'], ['4.9★', 'Average rating']].map(([n, l]) => (
