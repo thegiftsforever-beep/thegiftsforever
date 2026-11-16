@@ -218,7 +218,7 @@ export default function BuyBox({ product, whatsapp, suggestions = [], intro, chi
         Want to customize this gift? 💝 Add anything you want, just contact us on{' '}
         <a href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, I want to customize: ${product.name}`)}`} target="_blank" rel="noreferrer" className="text-[#128C7E] underline">WhatsApp!</a>
       </p>
-      <p className="mt-3 rounded-xl bg-blush/60 p-3 text-sm">💝 Please Note: If an item is not available, we will replace it with a similar item of the same value.</p>
+      <p className="mt-3 rounded-xl bg-blush/60 p-3 text-sm">💝 Please Read: If an item is unavailable, we may include a similar item of the same value.</p>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <button onClick={addToCart} className="btn-wine py-3.5">

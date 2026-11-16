@@ -27,8 +27,9 @@ export default async function CategoryPage({ params, searchParams }) {
   const c = await getCategory(slug);
   if (!c) notFound();
   const page = Math.max(1, Number(sp.page) || 1);
-  const [{ items, total, pages }, reviews, sections] = await Promise.all([
-    getCategoryProducts(c._id, { page }),
+  const [{ items, total }, reviews, sections] = await Promise.all([
+    // "View more" grows the list in steps of 24 instead of numbered pages
+    getCategoryProducts(c._id, { limit: page * 24 }),
     getReviews({ kind: 'category', category: c._id, limit: 6 }),
     // each sub category gets its own block of products, in sub category order
     Promise.all((c.children || []).map(async (k) => ({ k, ...(await getCategoryProducts(k._id, { limit: 8 })) }))),
@@ -93,12 +94,10 @@ export default async function CategoryPage({ params, searchParams }) {
           <div className="rounded-3xl bg-white p-16 text-center text-muted">No gifts here yet — check back soon.</div>
         )}
 
-        {pages > 1 && !shown.length && (
-          <nav className="mt-12 flex justify-center gap-2">
-            {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-              <Link key={n} href={href(n)} className={`flex h-10 w-10 items-center justify-center rounded-full text-sm ${n === page ? 'bg-wine text-ink' : 'bg-white hover:bg-blush'}`}>{n}</Link>
-            ))}
-          </nav>
+        {total > items.length && !shown.length && (
+          <div className="mt-12 text-center">
+            <Link href={href(page + 1)} scroll={false} className="btn-wine">View more</Link>
+          </div>
         )}
 
         {description && (

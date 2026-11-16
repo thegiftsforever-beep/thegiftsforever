@@ -46,7 +46,7 @@ Use the same database values in both apps. On Vercel, admin's `NEXT_PUBLIC_SITE_
 
 - Website theme colour `#D8A2A2` (`wine` token; `wine-ink` #8C4A4A for text, dark ink text on pink). Admin keeps `#740000` (`brand`). Headings use Poppins, hero titles Dancing Script.
 - Do not show cash on delivery or order tracking; the client removed both.
-- Every product page shows the line: "💝 Please Note: If an item is not available, we will replace it with a similar item of the same value."
+- Every product page shows the line: "💝 Please Read: If an item is unavailable, we may include a similar item of the same value."
 - The footer credit "Designed & Developed by Zoxen Digital" links to https://zoxendigital.com. Keep it.
 - The client asked for a display-only "% off" label. Remind them to use it only where the product really was sold at the higher price.
 
