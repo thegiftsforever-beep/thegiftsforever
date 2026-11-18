@@ -40,7 +40,8 @@ Use the same database values in both apps. On Vercel, admin's `NEXT_PUBLIC_SITE_
 - **Prices:** the customer pays the entered `price`. `discount` (admin "Discount %") is a label only, shown as "10% off"; it never changes the price. `comparePrice` is unused. The order API (`web/app/api/orders/route.js`) recomputes every price, modifier and delivery fee on the server; never trust prices sent by the client.
 - **Delivery and payment:** both come from the first active `Website` document, edited in admin under Websites (`deliveryOptions`, `freeDeliveryOver`, `paymentMethods`). `getSite()` in `web/lib/data.js` supplies defaults when these are empty. Checkout shows a Copy button for each `Label: value` line in payment details. The payment screenshot is optional.
 - **Currency:** display only, through `web/components/Currency.js` and `<Price>`. Orders are always stored in PKR.
-- **Order alert:** the admin shell polls for orders with status `new`, shows a badge and plays a chime until each one is moved to another status.
+- **Order alert:** the admin shell polls for orders with status `new` and shows a badge until each one is moved to another status. It rings once per new order, playing `admin/public/order-sound.mp3` if present, otherwise a built-in chime.
+- **Cakes:** bakery cakes (Kababjees, Delizia, Rehmat-e-Shereen in Karachi Cakes; Layers in the other city cake categories) were imported at bakery price + Rs. 1,000, tagged with the bakery and given the "Cake Message" form. The first tag shows as a label on product cards.
 
 ## Client conventions
 

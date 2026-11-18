@@ -5,7 +5,7 @@ import { Blog, Category, ContentPage, Product, Review, Slide, Website } from './
 
 const plain = (v) => JSON.parse(JSON.stringify(v));
 const visible = { active: true, hidden: { $ne: true } };
-const CARD = 'name slug coverImage price discount freeDelivery category';
+const CARD = 'name slug coverImage price discount freeDelivery category tags';
 
 const DEFAULT_DELIVERY = [{ name: 'Standard Delivery', price: 600 }, { name: 'Sameday Delivery', price: 800 }, { name: 'Midnight Delivery (10 to 12 PM)', price: 1000 }];
 
@@ -56,7 +56,7 @@ export async function getHomeRows(perRow = 8) {
   const rows = await Promise.all(
     cats.map(async (c) => ({
       category: c,
-      products: await Product.find({ ...visible, $or: [{ category: c._id }, { categories: c._id }] }, CARD)
+      products: await Product.find({ ...visible, $or: [{ category: c._id }, { categories: c._id }] }, CARD).populate('tags', 'name')
         .sort({ featured: -1, createdAt: -1 })
         .limit(perRow)
         .lean(),
@@ -87,7 +87,7 @@ export async function getCategoryProducts(categoryId, { sort = 'featured', page 
   if (min || max) filter.price = { ...(min ? { $gte: Number(min) } : {}), ...(max ? { $lte: Number(max) } : {}) };
   const order = sort === 'featured' ? { featuredOnCategory: -1, featured: -1, createdAt: -1 } : SORTS[sort] || SORTS.latest;
   const [items, total] = await Promise.all([
-    Product.find(filter, CARD).sort(order).skip((page - 1) * limit).limit(limit).lean(),
+    Product.find(filter, CARD).populate('tags', 'name').sort(order).skip((page - 1) * limit).limit(limit).lean(),
     Product.countDocuments(filter),
   ]);
   return plain({ items, total, pages: Math.max(1, Math.ceil(total / limit)) });
@@ -109,7 +109,7 @@ export async function getRelated(product, limit = 8) {
   await dbConnect();
   const cat = product.category?._id || product.category;
   return plain(
-    await Product.find({ ...visible, _id: { $ne: product._id }, $or: [{ category: cat }, { categories: cat }] }, CARD)
+    await Product.find({ ...visible, _id: { $ne: product._id }, $or: [{ category: cat }, { categories: cat }] }, CARD).populate('tags', 'name')
       .sort({ featured: -1, createdAt: -1 })
       .limit(limit)
       .lean()
@@ -122,7 +122,7 @@ export async function getSuggestions(product, limit = 4) {
   const cat = product.suggestionCategory || product.category?._id || product.category;
   if (!cat) return [];
   return plain(
-    await Product.find({ ...visible, _id: { $ne: product._id }, $or: [{ category: cat }, { categories: cat }] }, CARD)
+    await Product.find({ ...visible, _id: { $ne: product._id }, $or: [{ category: cat }, { categories: cat }] }, CARD).populate('tags', 'name')
       .sort({ featured: -1, createdAt: -1 })
       .limit(limit)
       .lean()
@@ -157,7 +157,7 @@ export async function getModifierRows(product, perRow = 8) {
     ids.map(async (id) => {
       const category = shown.find((x) => String(x._id) === String(id));
       if (!category) return null;
-      const items = await Product.find({ ...visible, _id: { $ne: productId }, $or: [{ category: id }, { categories: id }] }, CARD).sort({ featured: -1, createdAt: -1 }).limit(perRow).lean();
+      const items = await Product.find({ ...visible, _id: { $ne: productId }, $or: [{ category: id }, { categories: id }] }, CARD).populate('tags', 'name').sort({ featured: -1, createdAt: -1 }).limit(perRow).lean();
       return items.length ? { category, items } : null;
     })
   );
@@ -168,7 +168,7 @@ export async function searchProducts(q, limit = 48) {
   await dbConnect();
   if (!q) return [];
   const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-  return plain(await Product.find({ ...visible, $or: [{ name: rx }, { metaKeywords: rx }] }, CARD).limit(limit).lean());
+  return plain(await Product.find({ ...visible, $or: [{ name: rx }, { metaKeywords: rx }] }, CARD).populate('tags', 'name').limit(limit).lean());
 }
 
 export async function getReviews({ kind, category, limit = 12 } = {}) {

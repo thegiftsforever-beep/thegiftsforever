@@ -18,6 +18,9 @@ export default function ProductCard({ p, priority = false }) {
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition duration-700 group-hover:scale-105"
         />
+        {p.tags?.[0]?.name && (
+          <span className="absolute left-3 top-3 rounded bg-ink/85 px-2 py-1 text-[10.5px] font-semibold text-white">{p.tags[0].name}</span>
+        )}
         {p.freeDelivery && (
           <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-[10.5px] font-semibold text-ink backdrop-blur">
             <IconTruck width={13} height={13} /> Free

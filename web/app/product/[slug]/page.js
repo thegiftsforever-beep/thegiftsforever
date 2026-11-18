@@ -123,11 +123,6 @@ export default async function ProductPage({ params }) {
               </section>
             ))}
           </BuyBox>
-          {p.tags?.length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {p.tags.map((t) => <span key={t._id} className="rounded-full bg-blush px-3 py-1 text-xs font-medium text-wine-ink">{t.name}</span>)}
-            </div>
-          )}
         </div>
       </div>
 

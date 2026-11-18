@@ -32,6 +32,11 @@ const MENU = [
   { label: 'Change Password', href: '/change-password', icon: IconLock },
 ];
 
+function playOrderSound() {
+  const audio = new Audio('/order-sound.mp3');
+  audio.play().catch(playChime);
+}
+
 function playChime() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -112,7 +117,7 @@ export default function Shell({ children, adminName }) {
       .catch(() => {});
   }, []);
 
-  // orders stay "new" until confirmed: keep the alert up and keep ringing until then
+  // orders stay "new" until confirmed: keep the badge up, and ring once each time a new order arrives
   useEffect(() => {
     let stop = false;
     async function check() {
@@ -120,9 +125,9 @@ export default function Shell({ children, adminName }) {
         const d = await fetch('/api/admin/orders?limit=1&status=new').then((r) => r.json());
         const count = d.total || 0;
         setPending(count);
-        if (count > 0) playChime();
         const top = d.items?.[0];
         if (top && lastCount.current !== null && count > lastCount.current) {
+          playOrderSound();
           toast(`New order #${top.oid} from ${top.customer?.name || 'customer'}`, 'info');
         }
         lastCount.current = count;
