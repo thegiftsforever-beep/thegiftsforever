@@ -6,6 +6,7 @@ import HeaderClient from '@/components/HeaderClient';
 import CartDrawer from '@/components/CartDrawer';
 import Footer from '@/components/Footer';
 import { getAllCategories, getFooterPages, getMenuCategories, getRates, getSite } from '@/lib/data';
+import { SITE_URL } from '@/lib/site';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const dancing = Dancing_Script({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-dancing' });
@@ -14,14 +15,13 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['500', '600', '700'], var
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Send Gifts to Pakistan Online | Same Day Delivery - TheGiftsForever',
     template: '%s | TheGiftsForever',
   },
   description:
     'Send flowers, cakes, chocolates, gift hampers and personalised gifts to Pakistan. Same-day delivery in Karachi and fast nationwide delivery.',
-  alternates: { canonical: '/' },
   openGraph: { siteName: 'TheGiftsForever', type: 'website', images: [{ url: '/og.png', width: 1200, height: 630 }] },
   twitter: { card: 'summary_large_image', images: ['/og.png'] },
 };

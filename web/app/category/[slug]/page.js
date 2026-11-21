@@ -7,6 +7,7 @@ import Reviews from '@/components/Reviews';
 import Faqs from '@/components/Faqs';
 import { getCategory, getCategoryProducts, getReviews } from '@/lib/data';
 import { cleanHtml, hasH1, img } from '@/lib/utils';
+import { SITE_URL } from '@/lib/site';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -44,11 +45,11 @@ export default async function CategoryPage({ params, searchParams }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
-            { '@context': 'https://schema.org', '@type': 'CollectionPage', name: c.metaTitle || c.name, description: c.metaDescription, url: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/category/${c.slug}` },
+            { '@context': 'https://schema.org', '@type': 'CollectionPage', name: c.metaTitle || c.name, description: c.metaDescription, url: `${SITE_URL}/category/${c.slug}` },
             {
               '@context': 'https://schema.org',
               '@type': 'BreadcrumbList',
-              itemListElement: [['Home', '/'], ['Categories', '/categories'], [c.name, `/category/${c.slug}`]].map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${process.env.NEXT_PUBLIC_SITE_URL || ''}${path}` })),
+              itemListElement: [['Home', '/'], ['Categories', '/categories'], [c.name, `/category/${c.slug}`]].map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE_URL}${path}` })),
             },
           ]),
         }}

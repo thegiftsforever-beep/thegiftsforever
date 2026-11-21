@@ -6,6 +6,9 @@ import Reviews from '@/components/Reviews';
 import { IconArrowRight, IconHeart } from '@/components/Icons';
 import { getAllCategories, getBlogs, getHomeRows, getReviews, getSite, getSlides } from '@/lib/data';
 import { img } from '@/lib/utils';
+import { SITE_URL } from '@/lib/site';
+
+export const metadata = { alternates: { canonical: '/' } };
 
 const FALLBACK_SLIDES = [
   {
@@ -38,9 +41,9 @@ export default async function Home() {
             '@context': 'https://schema.org',
             '@type': ['Organization', 'LocalBusiness'],
             name: site.name,
-            url: process.env.NEXT_PUBLIC_SITE_URL,
-            logo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/logo.png`,
-            image: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/og.png`,
+            url: SITE_URL,
+            logo: `${SITE_URL}/logo.png`,
+            image: `${SITE_URL}/og.png`,
             telephone: site.phone,
             email: site.email,
             address: { '@type': 'PostalAddress', streetAddress: site.address, addressLocality: 'Karachi', addressCountry: 'PK' },

@@ -9,6 +9,7 @@ import { getModifierRows, getProduct, getRelated, getReviews, getSite, getSugges
 import { IconStar } from '@/components/Icons';
 import { cleanHtml, img, salePrice } from '@/lib/utils';
 import { Price } from '@/components/Currency';
+import { SITE_URL } from '@/lib/site';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -44,7 +45,7 @@ export default async function ProductPage({ params }) {
   const sale = salePrice(p.price);
   const stars = reviews.length ? Math.round(reviews.reduce((s, r) => s + (r.rating || 5), 0) / reviews.length) : 5;
 
-  const base = process.env.NEXT_PUBLIC_SITE_URL || '';
+  const base = SITE_URL;
   const abs = (u) => (u.startsWith('http') ? u : base + u);
   const url = abs(`/product/${p.slug}`);
   const jsonLd = [

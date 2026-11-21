@@ -32,9 +32,25 @@ const MENU = [
   { label: 'Change Password', href: '/change-password', icon: IconLock },
 ];
 
+// One shared player: browsers only allow sound after the page has been clicked once,
+// so the first click "unlocks" this element and later orders can play it.
+let orderAudio = null;
+const getAudio = () => (orderAudio ||= new Audio('/order-sound.mp3'));
+
 function playOrderSound() {
-  const audio = new Audio('/order-sound.mp3');
+  const audio = getAudio();
+  audio.currentTime = 0;
   audio.play().catch(playChime);
+}
+
+function unlockSound() {
+  const audio = getAudio();
+  audio.muted = true;
+  return audio.play().then(() => {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.muted = false;
+  });
 }
 
 function playChime() {
@@ -104,6 +120,13 @@ export default function Shell({ children, adminName }) {
   const [site, setSite] = useState('');
   const lastCount = useRef(null);
   const [pending, setPending] = useState(0);
+  const [soundOn, setSoundOn] = useState(false);
+
+  useEffect(() => {
+    const unlock = () => unlockSound().then(() => setSoundOn(true)).catch(() => {});
+    document.addEventListener('pointerdown', unlock, { once: true });
+    return () => document.removeEventListener('pointerdown', unlock);
+  }, []);
 
   useEffect(() => {
     fetch('/api/admin/options?type=websites')
@@ -193,7 +216,12 @@ export default function Shell({ children, adminName }) {
               <IconBell width={16} height={16} /> {pending} new order{pending > 1 ? 's' : ''}
             </Link>
           )}
-          <button onClick={playChime} className="hidden items-center gap-1 rounded border border-slate-400 px-2 py-1 text-xs text-slate-600 sm:flex">
+          {!soundOn && (
+            <button onClick={() => unlockSound().then(() => setSoundOn(true)).catch(() => {})} className="flex items-center gap-1 rounded bg-amber-400 px-2 py-1 text-xs font-semibold text-slate-900">
+              <IconBell width={14} height={14} /> Click to turn on order sound
+            </button>
+          )}
+          <button onClick={playOrderSound} className="hidden items-center gap-1 rounded border border-slate-400 px-2 py-1 text-xs text-slate-600 sm:flex">
             <IconBell width={14} height={14} /> Test Sound
           </button>
           <select
