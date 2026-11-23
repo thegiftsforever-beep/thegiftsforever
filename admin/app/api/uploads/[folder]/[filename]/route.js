@@ -31,7 +31,7 @@ export async function GET(_req, { params }) {
     headers: {
       'Content-Type': doc.mimeType,
       'Content-Length': String(bytes.length),
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
     },
   });
 }

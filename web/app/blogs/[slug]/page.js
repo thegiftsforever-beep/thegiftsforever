@@ -5,6 +5,11 @@ import Faqs from '@/components/Faqs';
 import { getBlog, getBlogs } from '@/lib/data';
 import { cleanHtml, hasH1, img } from '@/lib/utils';
 
+// Build each page on its first visit, then serve it from cache (revalidated with the layout, every 5 minutes).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const b = await getBlog(slug);

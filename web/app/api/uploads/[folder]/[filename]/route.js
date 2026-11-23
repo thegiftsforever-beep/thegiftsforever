@@ -44,7 +44,7 @@ export async function GET(req, { params }) {
     headers: {
       'Content-Type': type,
       'Content-Length': String(bytes.length),
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
     },
   });
 }

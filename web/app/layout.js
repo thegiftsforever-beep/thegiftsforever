@@ -12,7 +12,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const dancing = Dancing_Script({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-dancing' });
 const poppins = Poppins({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--font-poppins' });
 
-export const dynamic = 'force-dynamic';
+// Cached pages, rebuilt at most every 5 minutes: keeps Vercel CPU (4h/month on Hobby) low.
+export const revalidate = 300;
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

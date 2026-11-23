@@ -11,6 +11,11 @@ import { cleanHtml, img, salePrice } from '@/lib/utils';
 import { Price } from '@/components/Currency';
 import { SITE_URL } from '@/lib/site';
 
+// Build each page on its first visit, then serve it from cache (revalidated with the layout, every 5 minutes).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const p = await getProduct(slug);

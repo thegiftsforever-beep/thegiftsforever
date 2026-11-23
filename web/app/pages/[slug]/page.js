@@ -3,6 +3,11 @@ import PageHeader from '@/components/PageHeader';
 import { getPage } from '@/lib/data';
 import { cleanHtml, hasH1 } from '@/lib/utils';
 
+// Build each page on its first visit, then serve it from cache (revalidated with the layout, every 5 minutes).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const p = await getPage(slug);

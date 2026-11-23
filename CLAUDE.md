@@ -7,7 +7,7 @@ Gift shop for Pakistan. One repo, two Next.js 15 (App Router, JavaScript, Tailwi
 | `web/`   | Customer storefront | 3000     | https://www.thegiftsforever.com |
 | `admin/` | Admin panel         | 3001     | separate Vercel project     |
 
-Repo: `zoxen-digital/thegirftsforver` (push as the `zoxen-digital` GitHub account). Each app is its own Vercel project, with Root Directory `web` or `admin`; pushing to `main` redeploys both.
+Two GitHub repos hold the same `main`: `origin` = `zoxen-digital/thegirftsforver` and `client` = `thegiftsforever-beep/thegiftsforever` (the client's; zoxen-digital is a collaborator). Push every change to both as the `zoxen-digital` account. Hosting is moving to the client's own Vercel account, which deploys from the `client` repo: one project per app, Root Directory `web` or `admin`.
 
 ## Commands
 
@@ -39,6 +39,7 @@ Use the same database values in both apps. On Vercel, admin's `NEXT_PUBLIC_SITE_
 - **Admin login:** an HMAC-signed cookie (`lib/auth.js`). A password saved from the Change Password page (`AdminCredential`, scrypt hash) replaces `ADMIN_PASSWORD`.
 - **Prices:** the customer pays the entered `price`. `discount` (admin "Discount %") is a label only, shown as "10% off"; it never changes the price. `comparePrice` is unused. The order API (`web/app/api/orders/route.js`) recomputes every price, modifier and delivery fee on the server; never trust prices sent by the client.
 - **Delivery and payment:** both come from the first active `Website` document, edited in admin under Websites (`deliveryOptions`, `freeDeliveryOver`, `paymentMethods`). `getSite()` in `web/lib/data.js` supplies defaults when these are empty. Checkout shows a Copy button for each `Label: value` line in payment details. The payment screenshot is optional.
+- **Caching (Vercel Hobby CPU is 4h/month):** storefront pages are ISR with `revalidate = 300` (set in `web/app/layout.js`); product, blog and content pages use an empty `generateStaticParams` so they cache on first visit. The category page reads `?page`, so it renders per visit, but its data functions in `web/lib/data.js` are wrapped in `unstable_cache` (5 min). Admin edits reach the storefront within 5 minutes. `/api/uploads` sends `s-maxage` so the CDN keeps each resized image. MongoDB pools are capped at 5 connections (free Atlas tier limits connections). Do not reintroduce `force-dynamic` on the storefront.
 - **Currency:** display only, through `web/components/Currency.js` and `<Price>`. Orders are always stored in PKR.
 - **Order alert:** the admin shell polls for orders with status `new` and shows a badge until each one is moved to another status. It rings once per new order, playing `admin/public/order-sound.mp3` if present, otherwise a built-in chime.
 - **Cakes:** bakery cakes (Kababjees, Delizia, Rehmat-e-Shereen in Karachi Cakes; Layers in the other city cake categories) were imported at bakery price + Rs. 1,000, tagged with the bakery and given the "Cake Message" form. The first tag shows as a label on product cards.

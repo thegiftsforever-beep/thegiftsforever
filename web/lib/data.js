@@ -1,5 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import { dbConnect } from './db';
 import { Blog, Category, ContentPage, Product, Review, Slide, Website } from './models';
 
@@ -39,7 +40,7 @@ export const getMenuCategories = cache(async () => {
   return plain(await Category.find({ ...visible, showOnMenu: true }, 'name slug image').sort({ sort: 1, name: 1 }).limit(12).lean());
 });
 
-export async function getAllCategories() {
+async function getAllCategoriesUncached() {
   await dbConnect();
   return plain(await Category.find(visible, 'name slug image imageName parent').sort({ sort: 1, name: 1 }).lean());
 }
@@ -65,7 +66,7 @@ export async function getHomeRows(perRow = 8) {
   return plain(rows.filter((r) => r.products.length));
 }
 
-export async function getCategory(slug) {
+async function getCategoryUncached(slug) {
   await dbConnect();
   const c = await Category.findOne({ slug, active: true }).lean();
   if (!c) return null;
@@ -81,7 +82,7 @@ const SORTS = {
   name: { name: 1 },
 };
 
-export async function getCategoryProducts(categoryId, { sort = 'featured', page = 1, limit = 24, min, max } = {}) {
+async function getCategoryProductsUncached(categoryId, { sort = 'featured', page = 1, limit = 24, min, max } = {}) {
   await dbConnect();
   const filter = { ...visible, $or: [{ category: categoryId }, { categories: categoryId }] };
   if (min || max) filter.price = { ...(min ? { $gte: Number(min) } : {}), ...(max ? { $lte: Number(max) } : {}) };
@@ -171,7 +172,7 @@ export async function searchProducts(q, limit = 48) {
   return plain(await Product.find({ ...visible, $or: [{ name: rx }, { metaKeywords: rx }] }, CARD).populate('tags', 'name').limit(limit).lean());
 }
 
-export async function getReviews({ kind, category, limit = 12 } = {}) {
+async function getReviewsUncached({ kind, category, limit = 12 } = {}) {
   await dbConnect();
   const f = { active: true };
   if (kind) f.kind = kind;
@@ -201,3 +202,7 @@ export const getFooterPages = cache(async () => {
   return plain(await ContentPage.find({ active: true, showInFooter: true }, 'title slug').sort({ title: 1 }).lean());
 });
 
+export const getAllCategories = unstable_cache(getAllCategoriesUncached, ['getAllCategories'], { revalidate: 300 });
+export const getCategory = unstable_cache(getCategoryUncached, ['getCategory'], { revalidate: 300 });
+export const getCategoryProducts = unstable_cache(getCategoryProductsUncached, ['getCategoryProducts'], { revalidate: 300 });
+export const getReviews = unstable_cache(getReviewsUncached, ['getReviews'], { revalidate: 300 });

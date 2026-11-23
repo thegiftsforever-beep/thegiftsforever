@@ -9,6 +9,8 @@ export async function dbConnect() {
   if (!cached.promise) {
     cached.promise = mongoose.connect(uri, {
       bufferCommands: false,
+      maxPoolSize: 5,
+      maxIdleTimeMS: 60000,
       dbName: process.env.MONGODB_DB || 'thegiftsforever',
     });
   }
