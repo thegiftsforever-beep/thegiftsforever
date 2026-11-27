@@ -19,6 +19,8 @@ export const getSite = cache(async () => {
     whatsapp: (w?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || '923001234567').replace(/\D/g, ''),
     email: w?.email || 'hello@thegiftsforever.com',
     address: w?.address || 'Karachi, Pakistan',
+    homeContent: w?.homeContent || '',
+    homeFaqs: (w?.homeFaqs || []).map(({ q, a }) => ({ q, a })),
     delivery: w?.deliveryOptions?.length ? w.deliveryOptions.map(({ name, price }) => ({ name, price })) : DEFAULT_DELIVERY,
     freeOver: w?.freeDeliveryOver ?? 10000,
     payments: w?.paymentMethods?.length

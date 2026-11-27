@@ -84,7 +84,7 @@ export default async function ProductPage({ params }) {
         <span className="line-clamp-1 text-ink">{p.name}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
         <Gallery images={images.length ? images : ['/placeholder.svg']} alt={p.name} />
         <div>
           <h1 className="font-display text-3xl font-semibold leading-tight sm:text-4xl">{p.name}</h1>
@@ -109,6 +109,7 @@ export default async function ProductPage({ params }) {
             suggestions={suggestions}
             intro={p.shortDescription && <div className="prose-gift check-list mt-5 text-[15px]" dangerouslySetInnerHTML={{ __html: cleanHtml(p.shortDescription) }} />}
           >
+            {modifierRows.length > 0 && <p className="mt-8 font-display text-lg font-semibold">Want to Add More to This Gift? Choose What You Like!</p>}
             {modifierRows.map(({ category: mc, items }) => (
               <section key={mc._id} className="mt-8">
                 <div className="mb-3 flex items-center justify-between">

@@ -366,6 +366,8 @@ export const UI = {
         columns: [{ k: 'name', placeholder: 'e.g. Bank Transfer' }, { k: 'details', placeholder: 'One per line:\nBank: Meezan\nAccount Title: TheGiftsForever\nAccount Number: 0123456789\nIBAN: PK00...', textarea: true }],
         hint: 'Each "Label: value" line gets a Copy button at checkout.',
       },
+      { key: 'homeContent', label: 'Home Page Content', type: 'richtext', folder: 'pages', placeholder: 'Text shown on the home page under the products (one Heading 1 only)' },
+      { ...faqs, key: 'homeFaqs', label: 'Home Page FAQs' },
       { key: 'facebook', label: 'Facebook URL', type: 'text' },
       { key: 'instagram', label: 'Instagram URL', type: 'text' },
       { key: 'tiktok', label: 'TikTok URL', type: 'text' },

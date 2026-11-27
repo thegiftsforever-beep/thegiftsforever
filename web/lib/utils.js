@@ -25,6 +25,9 @@ export function salePrice(price) {
  */
 export function cleanHtml(html = '') {
   return String(html || '')
+    // Google Docs adds inline font sizes, colours and a wrapper span that override the page styles
+    .replace(/\s(?:style|dir)="[^"]*"/gi, '')
+    .replace(/<span id="docs-internal-guid[^"]*">/gi, '<span>')
     // drop list items that hold nothing but spaces, <br> or empty paragraphs
     .replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (li, inner) => (inner.replace(/<[^>]+>|&nbsp;|\s/g, '') ? li : ''))
     .replace(/<h([1-6])([^>]*?)\saria-level="([1-6])"([^>]*)>([\s\S]*?)<\/h\1>/gi, (_, _l, a, lvl, b, inner) => `<h${lvl}${a}${b}>${inner}</h${lvl}>`);

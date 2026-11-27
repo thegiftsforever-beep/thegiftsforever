@@ -4,6 +4,8 @@ import HeroSlider from '@/components/HeroSlider';
 import ProductCard from '@/components/ProductCard';
 import Reviews from '@/components/Reviews';
 import { IconArrowRight, IconHeart } from '@/components/Icons';
+import Faqs from '@/components/Faqs';
+import { cleanHtml, hasH1 } from '@/lib/utils';
 import { getAllCategories, getBlogs, getHomeRows, getReviews, getSite, getSlides } from '@/lib/data';
 import { img } from '@/lib/utils';
 import { SITE_URL } from '@/lib/site';
@@ -54,6 +56,7 @@ export default async function Home() {
       />
       <HeroSlider slides={slides.length ? slides : FALLBACK_SLIDES} />
 
+      {!hasH1(site.homeContent) && (
       <section className="container-x mt-12 max-w-4xl text-center">
         <h1 className="section-title">Send Gifts, Flowers and Cakes to Pakistan</h1>
         <p className="mt-4 text-[15px] leading-relaxed text-muted">
@@ -63,6 +66,7 @@ export default async function Home() {
           special moment.
         </p>
       </section>
+      )}
 
       {/* categories */}
       {topCats.length > 0 && (
@@ -95,6 +99,11 @@ export default async function Home() {
       {rows.slice(2).map((r) => (
         <ProductRow key={r.category._id} row={r} />
       ))}
+
+      {site.homeContent && (
+        <article className="prose-gift container-x mt-24 max-w-4xl rounded-3xl bg-white p-6 sm:p-12" dangerouslySetInnerHTML={{ __html: cleanHtml(site.homeContent) }} />
+      )}
+      <Faqs items={site.homeFaqs} title="Frequently Asked Questions – Send Gifts to Pakistan" />
 
       <Reviews reviews={reviews} />
 

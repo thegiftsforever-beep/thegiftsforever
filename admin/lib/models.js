@@ -307,6 +307,8 @@ const WebsiteSchema = new Schema(
     deliveryOptions: [DeliveryOption],
     freeDeliveryOver: { type: Number, default: 10000 },
     paymentMethods: [PaymentOption],
+    homeContent: String,
+    homeFaqs: [FaqItem],
     facebook: String,
     instagram: String,
     tiktok: String,

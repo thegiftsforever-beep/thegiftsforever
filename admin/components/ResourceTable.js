@@ -9,7 +9,8 @@ import { useToast } from './Toast';
 import { IconCopy, IconEdit, IconEye, IconPlus, IconStar } from './Icons';
 
 const get = (o, path) => path.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || '';
+// live admin always links to the real storefront, even if NEXT_PUBLIC_SITE_URL was copied from a local .env
+const SITE = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'https://thegiftsforever.com' : process.env.NEXT_PUBLIC_SITE_URL || '';
 
 export function Pager({ page, pages, total, limit, setPage }) {
   const from = total ? (page - 1) * limit + 1 : 0;
